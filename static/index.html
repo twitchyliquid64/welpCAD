@@ -1,0 +1,92 @@
+<html>
+<head>
+    <title>welpCAD</title>
+
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="css/material-icons.css">
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/general.css">
+
+    <!-- JavaScript for: jQuery, angular, materialize, and angular-materialize. All of which are needed. -->
+    <script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/paper.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/angular-materialize.min.js"></script>
+
+    <!-- load code for our object model -->
+    <script type="text/javascript" src="js/obj/rect.js"></script>
+
+    <!-- application initialization -->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/dataService.js"></script>
+    <script type="text/javascript" src="js/newObjModal.js"></script>
+    <script type="text/javascript" src="js/homeController.js"></script>
+    <script type="text/javascript" src="js/designerController.js"></script>
+
+</head>
+<body ng-app="welpCAD" ng-controller="BodyController">
+
+  <nav class="deep-orange lighten-1" role="navigation">
+    <div class="nav-wrapper"><a id="logo-container" href="#" class="brand-logo"><i class="material-icons">aspect_ratio</i> welpCAD</a>
+      <ul class="right hide-on-med-and-down">
+        <li ng-class="{active: page == 'home'}"><a href="#" ng-click="changePage('home')">Home</a></li>
+        <li ng-class="{active: page == 'designer'}"><a href="#" ng-click="changePage('designer')">Designer</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#" ng-click="changePage('home')">Home</a></li>
+        <li><a href="#" ng-click="changePage('designer')">Designer</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile"  data-sidenav="left" data-menuwidth="500" data-closeonclick="true" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+    <div >
+      <div ng-show="page=='home'">
+        <div class="section" ng-controller="homeController">
+        </div>
+      </div>
+
+      <div ng-show="page=='designer'">
+        <div class="section" ng-controller="designerController">
+          <div class="row">
+            <div class="col s7 section">
+              <canvas id="designerCanvas" style="width: 100%; height: 400px;"></canvas>
+            </div>
+            <div class="col s5 section">
+              <h5 style="display: inline-block;">Components</h5>
+
+              <ul class="collection">
+                <li class="collection-item avatar" style="min-height: 70px;">
+                  <i class="material-icons circle teal">view_agenda</i>
+                  <span class="title">rect-1</span>
+                  <p>
+                    width=100mm, height=240mm, x=0, y=0
+                  </p>
+                  <a href="#" class="secondary-content"><i class="material-icons">edit</i></a>
+                </li>
+              </ul>
+
+              <obj-modal open="newObjectModalOpen"></obj-modal>
+              <div class="fixed-action-btn">
+                <a href="#" class="btn-floating btn-large red" ng-click="newObj()">
+                  <i class="large material-icons">add</i>
+                </a>
+                <ul>
+                  <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
+                  <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+                  <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+</body>
+</html>

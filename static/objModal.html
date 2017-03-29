@@ -1,0 +1,57 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='newObjModalContainer' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="newObjModalContainer" class="modal">
+  <div class="modal-content">
+    <h4>New object</h4>
+
+
+    <div class="fields-container">
+      <div class="row" style="margin-bottom: 2px;"><!-- Type selector -->
+        <div class="col s5">
+          <p>
+            <input class="with-gap" name="typeSelector" type="radio" id="rectSelector" ng-click="setType('rectangle')" checked />
+            <label for="rectSelector">Rectangle</label>
+          </p>
+
+          <p>
+            <input class="with-gap" name="typeSelector" type="radio" id="circSelector" ng-click="setType('circle')"  />
+            <label for="circSelector">Circle</label>
+          </p>
+        </div>
+        <div class="col s7">
+          <canvas id="newObjModalCanvas" style="width: 100%; height: 120px;"></canvas>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 2px;"> <!-- Name -->
+        <div class="input-field col s12">
+          <input id="name_inpNewObj" type="text" ng-model="name" ng-class="nameValidation">
+          <label for="name_inpNewObj">Name</label>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 2px;"> <!-- Position input -->
+        <div class="input-field col s3">
+          <input id="x_inpNewObj" type="text" ng-model="pos.x" ng-class="xValidation">
+          <label for="x_inpNewObj">X position</label>
+        </div>
+        <div class="input-field col s3">
+          <input id="y_inpNewObj" type="text" ng-model="pos.y" ng-class="yValidation">
+          <label for="y_inpNewObj">Y position</label>
+        </div>
+        <div class="input-field col s3">
+          <input id="width_inpNewObj" type="text" ng-model="size.width" ng-class="widthValidation">
+          <label for="width_inpNewObj">Width</label>
+        </div>
+        <div class="input-field col s3">
+          <input id="height_inpNewObj" type="text" ng-model="size.height" ng-class="heightValidation">
+          <label for="height_inpNewObj">Height</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="done()">Create</a>
+  </div>
+</div>
