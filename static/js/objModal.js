@@ -15,6 +15,7 @@
         scope: {
           open: '=',
           newObjCallback: '&',
+          editObjCallback: '&',
           getSuggestedNameCallback: '&',
         },
         //restrict E means its can only be used as an element.
@@ -32,6 +33,10 @@
           $scope.size = {width: '', height: ''};
           $scope.name = '';
           $scope.lastSuggestedName = '';
+
+          //Edit mode only
+          $scope.isEditMode = false;
+          $scope.oldName = '';
 
           $scope.canvas = document.getElementById('newObjModalCanvas'); //Setup the preview
           $scope.paperSurface = new paper.PaperScope();
@@ -78,25 +83,53 @@
             return !combined.includes('invalid');
           };
 
-
+$scope.isEditMode = false;
           //Sets model back to default values
           function reset(){
             $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = [];
             $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
             $scope.pos = {x: '', y: ''};
             $scope.size = {width: '', height: ''};
+            $scope.isEditMode = false;
+          }
+
+          function saveObject(obj){
+            if ($scope.isEditMode){
+              console.log('editSave', obj, $scope.oldName)
+              $scope.editObjCallback({component: obj, oldName: $scope.oldName});
+            } else {
+              $scope.newObjCallback({component: obj});
+            }
           }
 
           //Called when the 'Create' button is pressed
           $scope.done = function(){
             if (valid()){
               if ($scope.typeSelected == 'rect'){
-                $scope.newObjCallback({component: new Rect($scope.name, $scope.pos, $scope.size)});
+                saveObject(new Rect($scope.name, $scope.pos, $scope.size));
               }
               $scope.open = false;
               reset();
             }
           }
+
+          // Called when the modal is dismissed
+          $scope.onModalComplete = function(){
+            console.log('onModalComplete');
+            reset();
+          }
+
+          // Called from the designerController when it wants us to edit an existing object
+          $scope.$on('do-obj-edit', function(event, args) {
+            $scope.name = $scope.oldName = args.obj.name;
+            $scope.typeSelected = args.obj.componentType;
+            $scope.pos = args.obj.getPosition()
+            if ($scope.typeSelected == 'rect'){
+              $scope.size = args.obj.getSize();
+            }
+            $scope.isEditMode = true;
+            $scope.open = true;
+          });
 
           paint();
         }

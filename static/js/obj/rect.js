@@ -16,12 +16,17 @@ Rect.prototype.setName = function(name) {
 Rect.prototype.setPosition = function(pos) {
   this.pos = pos;
 }
+Rect.prototype.getPosition = function() {
+  return jQuery.extend(true, {}, this.pos);
+}
 
 // Sets its size - takes a paper.Size.
 Rect.prototype.setSize = function(size) {
   this.size = size;
 }
-
+Rect.prototype.getSize = function() {
+  return jQuery.extend(true, {}, this.size);
+}
 
 // Returns a paper item to draw with
 Rect.prototype.getDrawable = function(paperScope) {

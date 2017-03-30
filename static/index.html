@@ -22,7 +22,7 @@
     <!-- application initialization -->
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/dataService.js"></script>
-    <script type="text/javascript" src="js/newObjModal.js"></script>
+    <script type="text/javascript" src="js/objModal.js"></script>
     <script type="text/javascript" src="js/homeController.js"></script>
     <script type="text/javascript" src="js/designerController.js"></script>
     <script type="text/javascript" src="js/componentDetailDirective.js"></script>
@@ -66,13 +66,14 @@
                   <i class="material-icons circle teal">{{getIcon(obj)}}</i>
                   <span class="title">{{obj.name}}</span>
                   <component-detail-directive obj="obj"></component-detail-directive>
-                  <a href="#" class="secondary-content"><i class="material-icons">edit</i></a>
+                  <a href="#" class="secondary-content" ng-click="edit(obj)"><i class="material-icons">edit</i></a>
                 </li>
               </ul>
 
               <obj-modal open="newObjectModalOpen"
                          new-obj-callback="newObjectCallback(component)"
-                         get-suggested-name-callback="document.suggestName(componentType)"></obj-modal>
+                         get-suggested-name-callback="document.suggestName(componentType)"
+                         edit-obj-callback="editObjectCallback(component, oldName)"></obj-modal>
               <div class="fixed-action-btn">
                 <a href="#" class="btn-floating btn-large red" ng-click="newObjButtonPressed()">
                   <i class="large material-icons">add</i>

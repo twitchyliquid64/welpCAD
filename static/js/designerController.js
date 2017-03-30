@@ -22,6 +22,16 @@
         $scope.document.add(obj);
         $scope.$broadcast('document-change');
       }
+      // Called from modal when an edit operation has completed.
+      $scope.editObjectCallback = function(component, oldName){
+        console.log(component, oldName);
+        $scope.document.applyEdit(oldName, component);
+        $scope.$broadcast('document-change');
+      }
+
+      $scope.edit = function(obj) {
+        $scope.$broadcast('do-obj-edit', {obj: obj});
+      }
 
       $scope.getIcon = function(obj){
         if (obj.name == $scope.selectedName){

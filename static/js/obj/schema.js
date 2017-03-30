@@ -8,6 +8,9 @@
 //setName(name)
 //getDrawable(paper.paperScope)
 //getSerializable()
+//getPosition()
+
 
 //Rects:
 //setSize(paper.Size)
+//getSize()

@@ -1,9 +1,10 @@
 <!-- Modal Trigger -->
-<a class='btn' style="display: none;" data-target='newObjModalContainer' open="open" modal>show Modal</a>
+<a class='btn' style="display: none;" data-target='objModalContainer' open="open" complete="onModalComplete()" modal>show Modal</a>
 <!-- Modal Structure -->
-<div id="newObjModalContainer" class="modal" style="max-height: 85%;">
+<div id="objModalContainer" class="modal" style="max-height: 85%;">
   <div class="modal-content">
-    <h4>New object</h4>
+    <h4 ng-if="!isEditMode">New object</h4>
+    <h4 ng-if="isEditMode">Edit object</h4>
 
 
     <div class="fields-container">
@@ -52,6 +53,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="done()">Create</a>
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="done()"><span ng-if="!isEditMode">Create</span><span ng-if="isEditMode">Save</span></a>
   </div>
 </div>
