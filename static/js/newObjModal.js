@@ -14,6 +14,8 @@
         //scope: {color: '=color'} binds 'color' two way. Pass the object here: color="color".
         scope: {
           open: '=',
+          newObjCallback: '&',
+          getSuggestedNameCallback: '&',
         },
         //restrict E means its can only be used as an element.
         restrict: 'E',
@@ -25,29 +27,38 @@
           // elem = jqLite wrapped element of: root object inside the template, so we can setup event handlers etc
         },
         controller: function($scope) {
-          $scope.typeSelected = 'rectangle';
-
+          $scope.typeSelected = 'rect';
           $scope.pos = {x: '', y: ''}; //For the inputs
           $scope.size = {width: '', height: ''};
           $scope.name = '';
+          $scope.lastSuggestedName = '';
 
           $scope.canvas = document.getElementById('newObjModalCanvas'); //Setup the preview
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
+          $scope.paperSurface.settings.insertItems = true;
+          $scope.paperSurface.view.onMouseDown = function(event){
+            $scope.paperSurface.view.scale(0.97);
+          };
 
-          function paint(){ //For the preview
+
+          //If no name is set, pick a default one using the callback.
+          //Re-paint the object preview to the canvas.
+          function paint(){
+            if ($scope.lastSuggestedName == $scope.name){
+              $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
+            }
+
             $scope.paperSurface.project.clear();
-            if ($scope.typeSelected == 'rectangle'){
+            if ($scope.typeSelected == 'rect'){
               $scope.path = new $scope.paperSurface.Path.Rectangle([$scope.paperSurface.view.size.width/4, $scope.paperSurface.view.size.height/4], [$scope.paperSurface.view.size.width/2, 80]);
               $scope.path.strokeColor = 'black';
             }
             else if ($scope.typeSelected == 'circle'){
-              $scope.path = new $scope.paperSurface.Path.Circle([$scope.paperSurface.view.size.width/2, 60], 45);
+              $scope.path = new $scope.paperSurface.Path.Circle([$scope.paperSurface.view.size.width/2, $scope.paperSurface.view.size.height/2], 45);
               $scope.path.strokeColor = 'black';
             }
-          };
-          $scope.paperSurface.view.onMouseDown = function(event){
-            $scope.paperSurface.view.scale(0.97);
+            $scope.paperSurface.project.activeLayer.addChild($scope.path);
           };
 
 
@@ -56,16 +67,34 @@
             paint();
           };
 
-          $scope.done = function(){
+          //Checks and applies validation classes. Returns true if fields are valid.
+          function valid(){
             $scope.xValidation = validationClass($scope.pos.x, true);
             $scope.yValidation = validationClass($scope.pos.y, true);
             $scope.widthValidation = validationClass($scope.size.width, true);
             $scope.heightValidation = validationClass($scope.size.height, true);
             $scope.nameValidation = validationClass($scope.name, false);
             var combined = $scope.xValidation.concat($scope.yValidation, $scope.widthValidation, $scope.heightValidation, $scope.nameValidation);
-            if (!combined.includes('invalid')){
-              //Do callback
+            return !combined.includes('invalid');
+          };
+
+
+          //Sets model back to default values
+          function reset(){
+            $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = [];
+            $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
+            $scope.pos = {x: '', y: ''};
+            $scope.size = {width: '', height: ''};
+          }
+
+          //Called when the 'Create' button is pressed
+          $scope.done = function(){
+            if (valid()){
+              if ($scope.typeSelected == 'rect'){
+                $scope.newObjCallback({component: new Rect($scope.name, $scope.pos, $scope.size)});
+              }
               $scope.open = false;
+              reset();
             }
           }
 

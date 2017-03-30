@@ -1,7 +1,7 @@
 <!-- Modal Trigger -->
 <a class='btn' style="display: none;" data-target='newObjModalContainer' open="open" modal>show Modal</a>
 <!-- Modal Structure -->
-<div id="newObjModalContainer" class="modal">
+<div id="newObjModalContainer" class="modal" style="max-height: 85%;">
   <div class="modal-content">
     <h4>New object</h4>
 
@@ -10,7 +10,7 @@
       <div class="row" style="margin-bottom: 2px;"><!-- Type selector -->
         <div class="col s5">
           <p>
-            <input class="with-gap" name="typeSelector" type="radio" id="rectSelector" ng-click="setType('rectangle')" checked />
+            <input class="with-gap" name="typeSelector" type="radio" id="rectSelector" ng-click="setType('rect')" checked />
             <label for="rectSelector">Rectangle</label>
           </p>
 
@@ -20,32 +20,32 @@
           </p>
         </div>
         <div class="col s7">
-          <canvas id="newObjModalCanvas" style="width: 100%; height: 120px;"></canvas>
+          <canvas id="newObjModalCanvas"></canvas>
         </div>
       </div>
 
       <div class="row" style="margin-bottom: 2px;"> <!-- Name -->
         <div class="input-field col s12">
-          <input id="name_inpNewObj" type="text" ng-model="name" ng-class="nameValidation">
+          <input id="name_inpNewObj" type="text" ng-model="name" ng-class="nameValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="name_inpNewObj">Name</label>
         </div>
       </div>
 
       <div class="row" style="margin-bottom: 2px;"> <!-- Position input -->
         <div class="input-field col s3">
-          <input id="x_inpNewObj" type="text" ng-model="pos.x" ng-class="xValidation">
+          <input id="x_inpNewObj" type="text" ng-model="pos.x" ng-class="xValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="x_inpNewObj">X position</label>
         </div>
         <div class="input-field col s3">
-          <input id="y_inpNewObj" type="text" ng-model="pos.y" ng-class="yValidation">
+          <input id="y_inpNewObj" type="text" ng-model="pos.y" ng-class="yValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="y_inpNewObj">Y position</label>
         </div>
         <div class="input-field col s3">
-          <input id="width_inpNewObj" type="text" ng-model="size.width" ng-class="widthValidation">
+          <input id="width_inpNewObj" type="text" ng-model="size.width" ng-class="widthValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="width_inpNewObj">Width</label>
         </div>
         <div class="input-field col s3">
-          <input id="height_inpNewObj" type="text" ng-model="size.height" ng-class="heightValidation">
+          <input id="height_inpNewObj" type="text" ng-model="size.height" ng-class="heightValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="height_inpNewObj">Height</label>
         </div>
       </div>

@@ -1,21 +1,39 @@
 (function () {
 
     angular.module('welpCAD')
-        .controller('designerController', ['$scope', 'dataService', designerController]);
+        .controller('designerController', ['$scope', 'dataService', '$rootScope', designerController]);
 
-    function designerController($scope, dataService) {
+    function designerController($scope, dataService, $rootScope) {
       var self = this;
       $scope.dataService = dataService;
 
-      self.canvas = document.getElementById('designerCanvas');
-      self.paperSurface = new paper.PaperScope();
-      self.paperSurface.setup(self.canvas);
-      self.paperSurface.settings.insertItems = false;
-
       $scope.newObjectModalOpen = false;
+      $scope.document = new Document();
+      $scope.selectedName = '';
 
-      $scope.newObj = function(){
+      // Invoked when the Add FAB is pressed.
+      $scope.newObjButtonPressed = function(){
         $scope.newObjectModalOpen = true;
       }
+
+      // Called from modal with a new object to be added in.
+      $scope.newObjectCallback = function(obj){
+        console.log(obj);
+        $scope.document.add(obj);
+        $scope.$broadcast('document-change');
+      }
+
+      $scope.getIcon = function(obj){
+        if (obj.name == $scope.selectedName){
+          return 'send';
+        }
+        return obj.icon;
+      }
+
+      $rootScope.$on('object-selected', function(event, args) {
+        console.log('selected', args);
+        $scope.selectedName = args.objName;
+        $scope.$digest();
+      });
     }
 })();

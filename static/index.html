@@ -17,6 +17,7 @@
 
     <!-- load code for our object model -->
     <script type="text/javascript" src="js/obj/rect.js"></script>
+    <script type="text/javascript" src="js/document.js"></script>
 
     <!-- application initialization -->
     <script type="text/javascript" src="js/app.js"></script>
@@ -24,6 +25,8 @@
     <script type="text/javascript" src="js/newObjModal.js"></script>
     <script type="text/javascript" src="js/homeController.js"></script>
     <script type="text/javascript" src="js/designerController.js"></script>
+    <script type="text/javascript" src="js/componentDetailDirective.js"></script>
+    <script type="text/javascript" src="js/designerSurfaceDirective.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController">
@@ -53,25 +56,25 @@
         <div class="section" ng-controller="designerController">
           <div class="row">
             <div class="col s7 section">
-              <canvas id="designerCanvas" style="width: 100%; height: 400px;"></canvas>
+              <designer-surface-directive objs="document.getObjs()"></designer-surface-directive>
             </div>
             <div class="col s5 section">
               <h5 style="display: inline-block;">Components</h5>
 
               <ul class="collection">
-                <li class="collection-item avatar" style="min-height: 70px;">
-                  <i class="material-icons circle teal">view_agenda</i>
-                  <span class="title">rect-1</span>
-                  <p>
-                    width=100mm, height=240mm, x=0, y=0
-                  </p>
+                <li class="collection-item avatar" style="min-height: 70px;" ng-repeat="obj in document.getObjs()">
+                  <i class="material-icons circle teal">{{getIcon(obj)}}</i>
+                  <span class="title">{{obj.name}}</span>
+                  <component-detail-directive obj="obj"></component-detail-directive>
                   <a href="#" class="secondary-content"><i class="material-icons">edit</i></a>
                 </li>
               </ul>
 
-              <obj-modal open="newObjectModalOpen"></obj-modal>
+              <obj-modal open="newObjectModalOpen"
+                         new-obj-callback="newObjectCallback(component)"
+                         get-suggested-name-callback="document.suggestName(componentType)"></obj-modal>
               <div class="fixed-action-btn">
-                <a href="#" class="btn-floating btn-large red" ng-click="newObj()">
+                <a href="#" class="btn-floating btn-large red" ng-click="newObjButtonPressed()">
                   <i class="large material-icons">add</i>
                 </a>
                 <ul>
