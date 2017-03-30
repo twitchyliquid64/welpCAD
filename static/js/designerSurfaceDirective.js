@@ -28,7 +28,6 @@
         controller: function($scope) {
           $scope.canvas = document.getElementById('designerCanvas');
           $scope.canvas.style.width ='100%';
-          $scope.canvas.style.height='100%';
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
           $scope.paperSurface.settings.insertItems = false;
@@ -37,6 +36,7 @@
             var hitResult = $scope.paperSurface.project.hitTest(event.point, hitOptions);
             $scope.selectedName = hitResult ? $scope.namesById[hitResult.item._id] : '';
             $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
+            highlightObjectByName($scope.selectedName);
           }
 
           function paint(){
@@ -53,6 +53,18 @@
               $scope.renderElements[$scope.objs[i].name] = o;
               $scope.namesById[o._id] = $scope.objs[i].name;
               $scope.paperSurface.project.activeLayer.addChild(o);
+            }
+          }
+
+          function highlightObjectByName(objectName){
+            for (var property in $scope.renderElements) {
+              if ($scope.renderElements.hasOwnProperty(property)) {
+                  if(property == objectName){
+                    $scope.renderElements[property].selected = true;
+                  } else {
+                    $scope.renderElements[property].selected = false;
+                  }
+              }
             }
           }
 
