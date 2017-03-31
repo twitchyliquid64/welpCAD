@@ -55,6 +55,7 @@
             for(var i = 0;i < objs.length; i++){ //iterate through each object in the drawable and paint on an invisible top layer
               var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
               o.opacity = 0;
+              if ($scope.selectedName == objs[i].name)o.selected = true;
               $scope.renderElements[objs[i].name] = o;
               $scope.componentLayer.addChild(o);
             }
@@ -83,6 +84,48 @@
                   }
               }
             }
+          }
+
+          function sizeObject(xMove, yMove){
+            var o = $scope.document.getObjectByName($scope.selectedName);
+            if (!o.getSize)return; // does not support changing the size
+            if (yMove) {
+              if (!isNaN(o.getSize().height)){
+                var size = o.getSize();
+                size.height -= -yMove;
+                o.setSize(size);
+              }
+            }
+            if (xMove) {
+              if (!isNaN(o.getSize().width)){
+                var size = o.getSize();
+                size.width -= -xMove;
+                o.setSize(size);
+              }
+            }
+            console.log(o);
+            $scope.$broadcast('document-change');
+            $rootScope.$digest();
+          }
+
+          function moveObject(xMove, yMove){
+            var o = $scope.document.getObjectByName($scope.selectedName);
+            if (yMove) {
+              if (!isNaN(o.getPosition().y)){
+                var pos = o.getPosition();
+                pos.y -= -yMove;
+                o.setPosition(pos);
+              }
+            }
+            if (xMove) {
+              if (!isNaN(o.getPosition().x)){
+                var pos = o.getPosition();
+                pos.x -= -xMove;
+                o.setPosition(pos);
+              }
+            }
+            $scope.$broadcast('document-change');
+            $rootScope.$digest();
           }
 
           $scope.$on('document-change', function(event, args) {
@@ -118,6 +161,26 @@
                 $rootScope.$broadcast('do-obj-edit', {obj: o});
                 setSelected('');
                 $rootScope.$digest();
+                return;
+              case 'up':
+                event.modifiers.shift
+                  ? sizeObject(0, event.modifiers.control ? -1 : -5)
+                  : moveObject(0, event.modifiers.control ? -1 : -5)
+                return;
+              case 'down':
+                event.modifiers.shift
+                  ? sizeObject(0, event.modifiers.control ?  1 :  5)
+                  : moveObject(0, event.modifiers.control ?  1 :  5)
+                return;
+              case 'left':
+                event.modifiers.shift
+                  ? sizeObject(event.modifiers.control ? -1 : -5)
+                  : moveObject(event.modifiers.control ? -1 : -5)
+                return;
+              case 'right':
+                event.modifiers.shift
+                  ? sizeObject(event.modifiers.control ?  1 :  5)
+                  : moveObject(event.modifiers.control ?  1 :  5)
                 return;
             }
           }
