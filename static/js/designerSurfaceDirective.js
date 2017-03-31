@@ -88,21 +88,26 @@
 
           function sizeObject(xMove, yMove){ //change the size of the currently selected object
             var o = $scope.document.getObjectByName($scope.selectedName);
-            if (!o.getSize)return; // does not support changing the size
-            if (yMove) {
-              if (!isNaN(o.getSize().height)){
-                var size = o.getSize();
-                size.height = (size.height - -yMove).toString();
-                o.setSize(size);
+            if (o.getSize){
+              if (yMove) {
+                if (!isNaN(o.getSize().height)){
+                  var size = o.getSize();
+                  size.height = (size.height - -yMove).toString();
+                  o.setSize(size);
+                }
+              }
+              if (xMove) {
+                if (!isNaN(o.getSize().width)){
+                  var size = o.getSize();
+                  size.width = (size.width - -xMove).toString();
+                  o.setSize(size);
+                }
               }
             }
-            if (xMove) {
-              if (!isNaN(o.getSize().width)){
-                var size = o.getSize();
-                size.width = (size.width - -xMove).toString();
-                o.setSize(size);
-              }
+            else if (o.getRadius && xMove && !isNaN(o.getRadius())){
+              o.setRadius((o.getRadius() - -xMove).toString());
             }
+
             console.log(o);
             $scope.$broadcast('document-change');
             $rootScope.$digest();

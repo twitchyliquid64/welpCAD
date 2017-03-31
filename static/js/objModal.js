@@ -29,8 +29,9 @@
         },
         controller: function($scope) {
           $scope.typeSelected = 'rect';
+          $scope.combinationOperation = 'add';
           $scope.pos = {x: '', y: ''}; //For the inputs
-          $scope.size = {width: '', height: ''};
+          $scope.size = {width: '', height: '', radius: ''};
           $scope.name = '';
           $scope.lastSuggestedName = '';
 
@@ -42,9 +43,6 @@
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
           $scope.paperSurface.settings.insertItems = false;
-          $scope.paperSurface.view.onMouseDown = function(event){
-            $scope.paperSurface.view.scale(0.97);
-          };
 
 
           //If no name is set, pick a default one using the callback.
@@ -76,8 +74,13 @@
           function valid(){
             $scope.xValidation = validationClass($scope.pos.x, true);
             $scope.yValidation = validationClass($scope.pos.y, true);
-            $scope.widthValidation = validationClass($scope.size.width, true);
-            $scope.heightValidation = validationClass($scope.size.height, true);
+            if ($scope.typeSelected == 'rect'){
+              $scope.widthValidation = validationClass($scope.size.width, true);
+              $scope.heightValidation = validationClass($scope.size.height, true);
+            }
+            if ($scope.typeSelected == 'circle'){
+              $scope.radiusValidation = validationClass($scope.size.radius, true);
+            }
             $scope.nameValidation = validationClass($scope.name, false);
             var combined = $scope.xValidation.concat($scope.yValidation, $scope.widthValidation, $scope.heightValidation, $scope.nameValidation);
             return !combined.includes('invalid');
@@ -90,6 +93,7 @@ $scope.isEditMode = false;
             $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
             $scope.pos = {x: '', y: ''};
             $scope.size = {width: '', height: ''};
+            $scope.combinationOperation = 'add';
             $scope.isEditMode = false;
           }
 
@@ -106,7 +110,11 @@ $scope.isEditMode = false;
           $scope.done = function(){
             if (valid()){
               if ($scope.typeSelected == 'rect'){
-                saveObject(new Rect($scope.name, $scope.pos, $scope.size));
+                $scope.size.radius = undefined;
+                saveObject(new Rect($scope.name, $scope.pos, $scope.size, $scope.combinationOperation));
+              }
+              if ($scope.typeSelected == 'circle'){
+                saveObject(new Circle($scope.name, $scope.pos, $scope.size.radius, $scope.combinationOperation));
               }
               $scope.open = false;
               reset();
@@ -127,6 +135,10 @@ $scope.isEditMode = false;
             if ($scope.typeSelected == 'rect'){
               $scope.size = args.obj.getSize();
             }
+            if ($scope.typeSelected == 'circle'){
+              $scope.size.radius = args.obj.getRadius();
+            }
+            $scope.combinationOperation = args.obj.getCombinationOperation();
             $scope.isEditMode = true;
             $scope.open = true;
           });

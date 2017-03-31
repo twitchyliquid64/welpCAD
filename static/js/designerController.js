@@ -54,7 +54,7 @@
 
       $scope.getIcon = function(obj){
         if (obj.name == $scope.selectedName){
-          return 'send';
+          return 'play_arrow';
         }
         return obj.icon;
       }
