@@ -6,7 +6,7 @@
 //.componentType - (string)
 //setPosition(paper.Point)
 //setName(name)
-//getDrawable(paper.paperScope)
+//getDrawable(paper.paperScope) - return.name must be object name.
 //getSerializable()
 //getPosition()
 

@@ -32,6 +32,7 @@ Rect.prototype.getSize = function() {
 Rect.prototype.getDrawable = function(paperScope) {
   var o = new paperScope.Path.Rectangle([this.pos.x, this.pos.y], [this.size.width, this.size.height]);
   o.strokeColor = 'black';
+  o.name = this.name;
   //o.fillColor = 'red';
   //o.opacity = 1
   return o;

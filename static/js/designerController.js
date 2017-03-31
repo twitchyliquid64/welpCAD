@@ -29,6 +29,7 @@
         $scope.$broadcast('document-change');
       }
 
+      // Called when the edit button of a component is pressed.
       $scope.edit = function(obj) {
         $scope.$broadcast('do-obj-edit', {obj: obj});
       }

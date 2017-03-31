@@ -14,7 +14,7 @@
         //scope: {color: '@colorAttr'} binds 'color' to the value of color-attr with a one way binding. Only strings supported here: color-attr="{{color}}"
         //scope: {color: '=color'} binds 'color' two way. Pass the object here: color="color".
         scope: {
-          objs: '=',
+          document: '=',
         },
         //restrict E means its can only be used as an element.
         restrict: 'E',
@@ -31,29 +31,32 @@
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
           $scope.paperSurface.settings.insertItems = false;
+          _initLayers();
           $scope.hasResized = false;
-          $scope.paperSurface.view.onMouseDown = function(event) {
-            var hitResult = $scope.paperSurface.project.hitTest(event.point, hitOptions);
-            $scope.selectedName = hitResult ? $scope.namesById[hitResult.item._id] : '';
-            $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
-            highlightObjectByName($scope.selectedName);
-          }
+          $scope.paperSurface.view.onMouseDown = canvasMouseDownEvent;
 
           function paint(){
             if(!$scope.hasResized){
               $scope.hasResized = true;
               $scope.paperSurface.view.viewSize = [document.getElementById('designerCanvas').offsetWidth, document.getElementById('designerCanvas').offsetHeight];
             }
+            paintComponentLayer();
+            paintMainLayer();
+          }
 
-            $scope.paperSurface.project.clear();
+          function paintComponentLayer(){
+            var objs = $scope.document.getObjs();
+            $scope.componentLayer.removeChildren();
             $scope.renderElements = {};
-            $scope.namesById = {};
-            for(var i = 0;i < $scope.objs.length; i++){
-              var o = $scope.objs[i].getDrawable($scope.paperSurface);
-              $scope.renderElements[$scope.objs[i].name] = o;
-              $scope.namesById[o._id] = $scope.objs[i].name;
-              $scope.paperSurface.project.activeLayer.addChild(o);
+            for(var i = 0;i < objs.length; i++){
+              var o = objs[i].getDrawable($scope.paperSurface);
+              $scope.renderElements[objs[i].name] = o;
+              $scope.componentLayer.addChild(o);
             }
+          }
+
+          function paintMainLayer(){
+            $scope.mainLayer.removeChildren();
           }
 
           function highlightObjectByName(objectName){
@@ -71,6 +74,21 @@
           $scope.$on('document-change', function(event, args) {
             paint();
           });
+
+          function canvasMouseDownEvent(event){
+            var hitResult = $scope.paperSurface.project.hitTest(event.point, hitOptions);
+            $scope.selectedName = hitResult ? hitResult.item.name : '';
+            $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
+            highlightObjectByName($scope.selectedName);
+          }
+
+          function _initLayers(){
+            $scope.componentLayer = new $scope.paperSurface.Layer();
+            $scope.paperSurface.project.addLayer($scope.componentLayer);
+            $scope.mainLayer = new $scope.paperSurface.Layer();
+            $scope.paperSurface.project.addLayer($scope.mainLayer);
+            $scope.mainLayer.moveAbove($scope.componentLayer);
+          }
         }
       };
   });
