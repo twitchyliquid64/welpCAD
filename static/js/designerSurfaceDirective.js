@@ -63,7 +63,7 @@
             var objs = $scope.document.getObjs();
             $scope.mainLayer.removeChildren();
             $scope.mainObj = undefined;
-            for(var i = 0;i < objs.length; i++){
+            for(var i = 0;i < objs.length; i++){ //TODO: Move this logic into a method in document - ie: document.getDrawable()
               var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
               if (!$scope.mainObj)
                 $scope.mainObj = o;
@@ -74,7 +74,6 @@
                     break;
                 }
               }
-              console.log(objs[i].getCombinationOperation(), objs[i]);
             }
             if ($scope.mainObj)$scope.mainLayer.addChild($scope.mainObj);
           }
