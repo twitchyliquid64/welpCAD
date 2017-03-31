@@ -1,6 +1,6 @@
 (function () {
     function validationClass(value, shouldBeNum){
-      if (value == '')return ['invalid'];
+      if (value === '')return ['invalid'];
       if (shouldBeNum && isNaN(value))return ['invalid'];
       return ['valid'];
     }

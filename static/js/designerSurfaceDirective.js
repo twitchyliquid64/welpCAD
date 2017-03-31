@@ -86,20 +86,20 @@
             }
           }
 
-          function sizeObject(xMove, yMove){
+          function sizeObject(xMove, yMove){ //change the size of the currently selected object
             var o = $scope.document.getObjectByName($scope.selectedName);
             if (!o.getSize)return; // does not support changing the size
             if (yMove) {
               if (!isNaN(o.getSize().height)){
                 var size = o.getSize();
-                size.height -= -yMove;
+                size.height = (size.height - -yMove).toString();
                 o.setSize(size);
               }
             }
             if (xMove) {
               if (!isNaN(o.getSize().width)){
                 var size = o.getSize();
-                size.width -= -xMove;
+                size.width = (size.width - -xMove).toString();
                 o.setSize(size);
               }
             }
@@ -108,19 +108,19 @@
             $rootScope.$digest();
           }
 
-          function moveObject(xMove, yMove){
+          function moveObject(xMove, yMove){ //move the currently selected object
             var o = $scope.document.getObjectByName($scope.selectedName);
             if (yMove) {
               if (!isNaN(o.getPosition().y)){
                 var pos = o.getPosition();
-                pos.y -= -yMove;
+                pos.y = (pos.y - -yMove).toString();
                 o.setPosition(pos);
               }
             }
             if (xMove) {
               if (!isNaN(o.getPosition().x)){
                 var pos = o.getPosition();
-                pos.x -= -xMove;
+                pos.x = (pos.x - -xMove).toString();
                 o.setPosition(pos);
               }
             }
