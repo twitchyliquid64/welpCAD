@@ -62,3 +62,10 @@ Document.prototype.getDrawable = function(paperSurface, options){
   }
   return root;
 }
+
+Document.prototype.getObjectByName = function(name){
+  var objs = this.getObjs();
+  for(var i = 0;i < objs.length; i++){
+    if (objs[i].name == name)return objs[i];
+  }
+}

@@ -36,6 +36,7 @@
           $scope.hasResized = false;
           $scope.paperSurface.view.onMouseDown = canvasMouseDownEvent;
           $scope.paperSurface.view.onMouseDrag = canvasMouseDragEvent;
+          $scope.paperSurface.view.onKeyDown = canvasKeyDownEvent;
           $scope.defaultDrawableOptions = {fill: '#ffe0b2'};
 
           function paint(){
@@ -66,6 +67,12 @@
               $scope.mainLayer.addChild($scope.mainObj);
           }
 
+          function setSelected(objName){
+            $scope.selectedName = objName;
+            $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
+            highlightObjectByName($scope.selectedName);
+          }
+
           function highlightObjectByName(objectName){
             for (var property in $scope.renderElements) {
               if ($scope.renderElements.hasOwnProperty(property)) {
@@ -85,9 +92,7 @@
           function canvasMouseDownEvent(event){
             $scope.lastPoint = $scope.paperSurface.view.projectToView(event.point);
             var hitResult = $scope.paperSurface.project.hitTest(event.point, hitOptions);
-            $scope.selectedName = hitResult ? hitResult.item.name : '';
-            $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
-            highlightObjectByName($scope.selectedName);
+            setSelected(hitResult ? hitResult.item.name : '');
           }
           function canvasMouseDragEvent(event){
             var point = $scope.paperSurface.view.projectToView(event.point);
@@ -99,6 +104,22 @@
             $scope.paperSurface.view.scale(1 + (-0.0009 * event.deltaY));
             //$scope.paperSurface.view.center = $scope.paperSurface.view.viewToProject(new $scope.paperSurface.Point(event.layerX, event.layerY));
             return false;
+          }
+          function canvasKeyDownEvent(event){
+            if (!$scope.selectedName)return;
+            console.log(event);
+            switch (event.key){
+              case 'escape': //escape - deselect current element
+                setSelected('');
+                return;
+              case 'e': //edit current element
+                var o = $scope.document.getObjectByName($scope.selectedName);
+                console.log(o);
+                $rootScope.$broadcast('do-obj-edit', {obj: o});
+                setSelected('');
+                $rootScope.$digest();
+                return;
+            }
           }
 
           function _initLayers(){
