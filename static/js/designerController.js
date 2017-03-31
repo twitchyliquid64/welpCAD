@@ -34,6 +34,24 @@
         $scope.$broadcast('do-obj-edit', {obj: obj});
       }
 
+      // Called when the operation indicator is pressed.
+      $scope.cycleCombinationOperations = function(obj){
+        if ($scope.document.isBaseObject(obj)){
+          console.log("Base object must be addition type");
+          return;
+        }
+
+        switch (obj.combinationOperation){
+          case "add":
+            obj.combinationOperation = 'sub';
+            break;
+          case "sub":
+            obj.combinationOperation = 'add';
+            break;
+        }
+        $scope.$broadcast('document-change');
+      }
+
       $scope.getIcon = function(obj){
         if (obj.name == $scope.selectedName){
           return 'send';

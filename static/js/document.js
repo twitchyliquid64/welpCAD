@@ -57,6 +57,9 @@ Document.prototype.getDrawable = function(paperSurface, options){
         case 'add':
           root = root.unite(o);
           break;
+        case 'sub':
+          root = root.subtract(o);
+          break;
       }
     }
   }
@@ -68,4 +71,8 @@ Document.prototype.getObjectByName = function(name){
   for(var i = 0;i < objs.length; i++){
     if (objs[i].name == name)return objs[i];
   }
+}
+
+Document.prototype.isBaseObject = function(obj){
+  return this.getObjs().length && this.getObjs()[0].name == obj.name;
 }

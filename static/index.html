@@ -64,6 +64,7 @@
               <ul class="collection">
                 <li class="collection-item avatar" style="min-height: 70px;" ng-repeat="obj in document.getObjs()">
                   <i class="material-icons circle teal">{{getIcon(obj)}}</i>
+                  <i class="op-indicator" ng-class="{amber: obj.combinationOperation=='sub'}" ng-click="cycleCombinationOperations(obj)"></i>
                   <span class="title">{{obj.name}}</span>
                   <component-detail-directive obj="obj"></component-detail-directive>
                   <a href="#" class="secondary-content" ng-click="edit(obj)"><i class="material-icons">edit</i></a>
