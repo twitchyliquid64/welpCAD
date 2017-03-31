@@ -44,3 +44,21 @@ Document.prototype.applyEdit = function(oldName, obj) {
 Document.prototype.getObjs = function(){
   return this.objs;
 }
+
+Document.prototype.getDrawable = function(paperSurface, options){
+  var objs = this.getObjs();
+  var root = undefined;
+  for(var i = 0;i < objs.length; i++){
+    var o = objs[i].getDrawable(paperSurface, options);
+    if (!root)
+      root = o;
+    else {
+      switch (objs[i].getCombinationOperation()){
+        case 'add':
+          root = root.unite(o);
+          break;
+      }
+    }
+  }
+  return root;
+}

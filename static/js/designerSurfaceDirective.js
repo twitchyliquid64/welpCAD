@@ -51,7 +51,7 @@
             var objs = $scope.document.getObjs();
             $scope.componentLayer.removeChildren();
             $scope.renderElements = {};
-            for(var i = 0;i < objs.length; i++){
+            for(var i = 0;i < objs.length; i++){ //iterate through each object in the drawable and paint on an invisible top layer
               var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
               o.opacity = 0;
               $scope.renderElements[objs[i].name] = o;
@@ -60,22 +60,10 @@
           }
 
           function paintMainLayer(){
-            var objs = $scope.document.getObjs();
             $scope.mainLayer.removeChildren();
-            $scope.mainObj = undefined;
-            for(var i = 0;i < objs.length; i++){ //TODO: Move this logic into a method in document - ie: document.getDrawable()
-              var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
-              if (!$scope.mainObj)
-                $scope.mainObj = o;
-              else {
-                switch (objs[i].getCombinationOperation()){
-                  case 'add':
-                    $scope.mainObj = $scope.mainObj.unite(o);
-                    break;
-                }
-              }
-            }
-            if ($scope.mainObj)$scope.mainLayer.addChild($scope.mainObj);
+            $scope.mainObj = $scope.document.getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
+            if ($scope.mainObj)
+              $scope.mainLayer.addChild($scope.mainObj);
           }
 
           function highlightObjectByName(objectName){
@@ -108,7 +96,6 @@
             $scope.lastPoint = point;
           }
           function canvasMousewheelEvent(event){
-            console.log('mousewheel', event);
             $scope.paperSurface.view.scale(1 + (-0.0009 * event.deltaY));
             //$scope.paperSurface.view.center = $scope.paperSurface.view.viewToProject(new $scope.paperSurface.Point(event.layerX, event.layerY));
             return false;
