@@ -6,10 +6,11 @@
 //.componentType - (string)
 //setPosition(paper.Point)
 //setName(name)
-//getDrawable(paper.paperScope) - return.name must be object name.
+//getDrawable(paper.paperScope, opts object) - return.name must be object name.
 //getSerializable()
 //getPosition()
-
+//getCombinationOperation() - returns 'add','sub'
+//setCombinationOperation(val)
 
 //Rects:
 //setSize(paper.Size)

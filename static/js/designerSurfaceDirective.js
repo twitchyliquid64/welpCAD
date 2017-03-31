@@ -34,6 +34,7 @@
           _initLayers();
           $scope.hasResized = false;
           $scope.paperSurface.view.onMouseDown = canvasMouseDownEvent;
+          $scope.defaultDrawableOptions = {fill: '#ffe0b2'};
 
           function paint(){
             if(!$scope.hasResized){
@@ -49,14 +50,31 @@
             $scope.componentLayer.removeChildren();
             $scope.renderElements = {};
             for(var i = 0;i < objs.length; i++){
-              var o = objs[i].getDrawable($scope.paperSurface);
+              var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
+              o.opacity = 0;
               $scope.renderElements[objs[i].name] = o;
               $scope.componentLayer.addChild(o);
             }
           }
 
           function paintMainLayer(){
+            var objs = $scope.document.getObjs();
             $scope.mainLayer.removeChildren();
+            $scope.mainObj = undefined;
+            for(var i = 0;i < objs.length; i++){
+              var o = objs[i].getDrawable($scope.paperSurface, $scope.defaultDrawableOptions);
+              if (!$scope.mainObj)
+                $scope.mainObj = o;
+              else {
+                switch (objs[i].getCombinationOperation()){
+                  case 'add':
+                    $scope.mainObj = $scope.mainObj.unite(o);
+                    break;
+                }
+              }
+              console.log(objs[i].getCombinationOperation(), objs[i]);
+            }
+            if ($scope.mainObj)$scope.mainLayer.addChild($scope.mainObj);
           }
 
           function highlightObjectByName(objectName){
@@ -87,7 +105,7 @@
             $scope.paperSurface.project.addLayer($scope.componentLayer);
             $scope.mainLayer = new $scope.paperSurface.Layer();
             $scope.paperSurface.project.addLayer($scope.mainLayer);
-            $scope.mainLayer.moveAbove($scope.componentLayer);
+            $scope.componentLayer.moveAbove($scope.mainLayer);
           }
         }
       };

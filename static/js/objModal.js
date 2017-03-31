@@ -41,7 +41,7 @@
           $scope.canvas = document.getElementById('newObjModalCanvas'); //Setup the preview
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
-          $scope.paperSurface.settings.insertItems = true;
+          $scope.paperSurface.settings.insertItems = false;
           $scope.paperSurface.view.onMouseDown = function(event){
             $scope.paperSurface.view.scale(0.97);
           };
