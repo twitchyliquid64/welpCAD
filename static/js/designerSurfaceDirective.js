@@ -28,12 +28,14 @@
         controller: function($scope) {
           $scope.canvas = document.getElementById('designerCanvas');
           $scope.canvas.style.width ='100%';
+          $scope.canvas.addEventListener('mousewheel', canvasMousewheelEvent, false);
           $scope.paperSurface = new paper.PaperScope();
           $scope.paperSurface.setup($scope.canvas);
           $scope.paperSurface.settings.insertItems = false;
           _initLayers();
           $scope.hasResized = false;
           $scope.paperSurface.view.onMouseDown = canvasMouseDownEvent;
+          $scope.paperSurface.view.onMouseDrag = canvasMouseDragEvent;
           $scope.defaultDrawableOptions = {fill: '#ffe0b2'};
 
           function paint(){
@@ -94,10 +96,23 @@
           });
 
           function canvasMouseDownEvent(event){
+            $scope.lastPoint = $scope.paperSurface.view.projectToView(event.point);
             var hitResult = $scope.paperSurface.project.hitTest(event.point, hitOptions);
             $scope.selectedName = hitResult ? hitResult.item.name : '';
             $rootScope.$broadcast('object-selected', {objName: $scope.selectedName});
             highlightObjectByName($scope.selectedName);
+          }
+          function canvasMouseDragEvent(event){
+            var point = $scope.paperSurface.view.projectToView(event.point);
+            var last = $scope.paperSurface.view.viewToProject($scope.lastPoint);
+            $scope.paperSurface.view.scrollBy(last.subtract(event.point));
+            $scope.lastPoint = point;
+          }
+          function canvasMousewheelEvent(event){
+            console.log('mousewheel', event);
+            $scope.paperSurface.view.scale(1 + (-0.0009 * event.deltaY));
+            //$scope.paperSurface.view.center = $scope.paperSurface.view.viewToProject(new $scope.paperSurface.Point(event.layerX, event.layerY));
+            return false;
           }
 
           function _initLayers(){
