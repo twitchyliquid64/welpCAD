@@ -87,10 +87,8 @@ function applySegmentToPath(path, segment, isNewElement){
     if (segment.curve.isStraight()){
       path.lineTo(segment.point.x, segment.point.y);
     } else {
-      var hi = segment.handleIn;
-      var ho = segment.handleOut;
-      var sp = segment.point;
-      path.bezierCurveTo(segment.point.x, segment.point.y, hi.x + sp.x, hi.y + sp.y, ho.x + sp.x, ho.y + sp.y);
+      var points = segment.curve.points;
+      path.bezierCurveTo(points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y);
       //console.log("Cannot convert segment to path:", segment.curve, segment.handleIn, segment.handleOut);
     }
   }
