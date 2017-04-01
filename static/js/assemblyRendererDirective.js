@@ -52,7 +52,7 @@
             $scope.scene = new THREE.Scene();
             $scope.camera = new THREE.PerspectiveCamera( 75, 550 / 450.0, 0.1, 1000 );
             $scope.renderer = new THREE.WebGLRenderer({ antialias: true });
-            $scope.renderer.setSize( 550, 450 );
+            //$scope.renderer.setSize( 550, 450 );
             $scope.renderer.setClearColor( 0xffffff );
             $scope.renderer.gammaInput = true;
     				$scope.renderer.gammaOutput = true;
