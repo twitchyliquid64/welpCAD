@@ -29,6 +29,10 @@
         $scope.$broadcast('document-change');
       }
 
+      $scope.debugPressed = function(){
+        $rootScope.$broadcast('assembler-preview-path', {path: $scope.document.getRenderable({fill: '#ffe0b2'}, {fill: '#ffe0b2'})});
+      }
+
       // Called when the edit button of a component is pressed.
       $scope.edit = function(obj) {
         $scope.$broadcast('do-obj-edit', {obj: obj});

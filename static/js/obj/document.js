@@ -45,6 +45,20 @@ Document.prototype.getObjs = function(){
   return this.objs;
 }
 
+Document.prototype.getObjectByName = function(name){
+  var objs = this.getObjs();
+  for(var i = 0;i < objs.length; i++){
+    if (objs[i].name == name)return objs[i];
+  }
+}
+
+Document.prototype.isBaseObject = function(obj){
+  return this.getObjs().length && this.getObjs()[0].name == obj.name;
+}
+
+
+
+// Returns a paper.js CompoundPath for render.
 Document.prototype.getDrawable = function(paperSurface, options){
   var objs = this.getObjs();
   var root = undefined;
@@ -66,13 +80,43 @@ Document.prototype.getDrawable = function(paperSurface, options){
   return root;
 }
 
-Document.prototype.getObjectByName = function(name){
-  var objs = this.getObjs();
-  for(var i = 0;i < objs.length; i++){
-    if (objs[i].name == name)return objs[i];
+function applySegmentToPath(path, segment, isNewElement){
+  if (isNewElement){
+    path.moveTo(segment.point.x, segment.point.y);
+  } else {
+    if (segment.curve.isStraight()){
+      path.lineTo(segment.point.x, segment.point.y);
+    } else {
+      var hi = segment.handleIn;
+      var ho = segment.handleOut;
+      var sp = segment.point;
+      path.bezierCurveTo(segment.point.x, segment.point.y, hi.x + sp.x, hi.y + sp.y, ho.x + sp.x, ho.y + sp.y);
+      //console.log("Cannot convert segment to path:", segment.curve, segment.handleIn, segment.handleOut);
+    }
   }
 }
 
-Document.prototype.isBaseObject = function(obj){
-  return this.getObjs().length && this.getObjs()[0].name == obj.name;
+Document.prototype.getRenderable = function(paperOptions, pathOptions){
+  var drawable = this.getDrawable(paper, paperOptions);
+  var path = new THREE.ShapePath();
+
+  console.log('compountPath:', drawable instanceof paper.CompoundPath)
+  console.log('closed:', drawable.closed);
+  console.log('children:', drawable.children);
+
+  if (drawable instanceof paper.CompoundPath) {
+    for(var i = 0; i < drawable.children.length; i++){
+      var p = drawable.children[i];
+      for(var o = 0; o < p.segments.length; o++){
+        applySegmentToPath(path, p.segments[o], o == 0);
+      }
+    }
+  } else {
+    for(var o = 0; o < drawable.segments.length; o++){
+      applySegmentToPath(path, drawable.segments[o], o == 0);
+    }
+  }
+
+  console.log(drawable, path);
+  return path;
 }

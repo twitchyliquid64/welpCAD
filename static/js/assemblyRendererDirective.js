@@ -78,7 +78,9 @@
       			$scope.scene.add( $scope.lights[ 1 ] );
       			$scope.scene.add( $scope.lights[ 2 ] );
 
-            $scope.camera.position.z = 5;
+            $scope.camera.position.z = 550;
+            $scope.mainMeshes = new THREE.Group();
+            $scope.scene.add( $scope.mainMeshes );
           }
 
           function applySize(width, height){
@@ -90,21 +92,50 @@
           function render() {
           	requestAnimationFrame( render );
             $scope.controls.update();
+            if ($scope.startingGraphic)
+              $scope.startingGraphic.rotation.y += 0.01;
           	$scope.renderer.render( $scope.scene, $scope.camera );
           }
 
-          $scope.applyRender = function(){
+          //Called with meshes to render
+          $scope.applyRender = function(meshes){
+            if ($scope.startingGraphic){
+              $scope.scene.remove($scope.startingGraphic);
+              $scope.startingGraphic = undefined;
+            }
+
+            for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
+                $scope.mainMeshes.remove($scope.mainMeshes.children[i]);
+            }
+            for (var i = 0; i < meshes.length; i++)
+              $scope.mainMeshes.add(meshes[i]);
+          }
+
+
+
+          $scope.$on('resize-assembler-renderer', function(event, args) {
             var container = document.getElementById('assemblerRenderContainer');
             applySize(container.offsetWidth, container.offsetHeight);
-          }
+          });
+          $scope.$on('render-only', function(event, args) {
+            var shapes = args.path.toShapes(true);
+            var solid = new THREE.ExtrudeGeometry(shapes, { amount: args.amount || 3, bevelEnabled: false });
+            var mesh = new THREE.SceneUtils.createMultiMaterialObject(solid, [material]);
+            $scope.applyRender([mesh]);
+          });
+
+
+
 
           init();
 
-          var cube = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ), material );
-          $scope.scene.add( cube );
-          //group = new THREE.Group();
-          //$scope.scene.add( group );
-          //extrudedSteps( group );
+          var loader = new THREE.FontLoader();
+         loader.load('/fonts/helvetiker_regular.typeface.json', function (res) {
+           var tx = new THREE.TextGeometry('welpCAD', {font: res});
+           THREE.GeometryUtils.center( tx );
+           $scope.startingGraphic = new THREE.Mesh( tx, material );
+           $scope.scene.add( $scope.startingGraphic );
+         });
 
           render();
         }
