@@ -87,13 +87,31 @@ function applySegmentToPath(path, segment, isNewElement){
     if (segment.curve.isStraight()){
       path.lineTo(segment.point.x, segment.point.y);
     } else {
-      var hi = segment.handleIn;
+      var hi = segment.next.handleIn;
       var ho = segment.handleOut;
       var sp = segment.point;
+      console.log(segment.point == segment.curve.getPoint2());
       path.bezierCurveTo(segment.point.x, segment.point.y, hi.x + sp.x, hi.y + sp.y, ho.x + sp.x, ho.y + sp.y);
       //console.log("Cannot convert segment to path:", segment.curve, segment.handleIn, segment.handleOut);
     }
   }
+}
+
+function applyCurveToPath(path, curve, lastPoint){
+  var points = curve.points;
+  var p1 = points[0];
+  var p2 = points[2];
+  if (!p1.equals(lastPoint)){
+    path.moveTo(p1.x, p1.y);
+  }
+  if (curve.isStraight()){
+    path.lineTo(p2.x, p2.y);
+  } else {
+    var hi = points[1];
+    var ho = points[3];
+    path.bezierCurveTo(p2.x, p2.y, p1.x - hi.x, p1.y - hi.y, p1.x - ho.x, p1.y - ho.y);
+  }
+  return p2;
 }
 
 Document.prototype.getRenderable = function(paperOptions, pathOptions){
@@ -107,13 +125,15 @@ Document.prototype.getRenderable = function(paperOptions, pathOptions){
   if (drawable instanceof paper.CompoundPath) {
     for(var i = 0; i < drawable.children.length; i++){
       var p = drawable.children[i];
-      for(var o = 0; o < p.segments.length; o++){
-        applySegmentToPath(path, p.segments[o], o == 0);
+      var lastPoint = undefined;
+      for(var o = 0; o < p.curves.length; o++){
+        lastPoint = applyCurveToPath(path, p.curves[o], lastPoint);
       }
     }
   } else {
-    for(var o = 0; o < drawable.segments.length; o++){
-      applySegmentToPath(path, drawable.segments[o], o == 0);
+    var lastPoint = undefined;
+    for(var o = 0; o < drawable.curves.length; o++){
+      lastPoint = applyCurveToPath(path, drawable.curves[o], lastPoint);
     }
   }
 
