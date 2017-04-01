@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="css/general.css">
 
     <!-- JavaScript for: jQuery, angular, materialize, and angular-materialize. All of which are needed. -->
-    <script type="text/javascript" src="js/jquery-3.0.0.min.js"></script>
-    <script type="text/javascript" src="js/angular.min.js"></script>
-    <script type="text/javascript" src="js/paper.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript" src="js/angular-materialize.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="js/libs/angular.min.js"></script>
+    <script type="text/javascript" src="js/libs/paper.js"></script>
+    <script type="text/javascript" src="js/libs/materialize.min.js"></script>
+    <script type="text/javascript" src="js/libs/angular-materialize.min.js"></script>
+    <script type="text/javascript" src="js/libs/three.min.js"></script>
+    <script type="text/javascript" src="js/libs/threestats.min.js"></script>
+    <script type="text/javascript" src="js/libs/three.trackballcontrols.js"></script>
 
     <!-- load code for our object model -->
     <script type="text/javascript" src="js/obj/rect.js"></script>
@@ -28,6 +31,7 @@
     <script type="text/javascript" src="js/designerController.js"></script>
     <script type="text/javascript" src="js/componentDetailDirective.js"></script>
     <script type="text/javascript" src="js/designerSurfaceDirective.js"></script>
+    <script type="text/javascript" src="js/assemblyRendererDirective.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController">
@@ -37,11 +41,13 @@
       <ul class="right hide-on-med-and-down">
         <li ng-class="{active: page == 'home'}"><a href="#" ng-click="changePage('home')">Home</a></li>
         <li ng-class="{active: page == 'designer'}"><a href="#" ng-click="changePage('designer')">Designer</a></li>
+        <li ng-class="{active: page == 'assembler'}"><a href="#" ng-click="changePage('assembler')">Assembler</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
         <li><a href="#" ng-click="changePage('home')">Home</a></li>
         <li><a href="#" ng-click="changePage('designer')">Designer</a></li>
+        <li><a href="#" ng-click="changePage('assembler')">Assembler</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile"  data-sidenav="left" data-menuwidth="500" data-closeonclick="true" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -90,6 +96,18 @@
           </div>
         </div>
       </div>
+
+      <div ng-show="page=='assembler'">
+        <div class="row">
+          <div class="col s7 section" style="margin-top:8px;">
+            <assembly-renderer-directive></assembly-renderer-directive>
+          </div>
+          <div class="col s5 section">
+            <h5 style="display: inline-block;">Objects in Assembly</h5>
+          </div>
+        </div>
+      </div>
+
     </div>
 
 
