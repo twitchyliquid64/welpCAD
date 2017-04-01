@@ -1,13 +1,9 @@
 (function () {
 
-  var diffuseColor = new THREE.Color().setHSL( 0, 0.5, 0.5 );
-	var material = new THREE.MeshPhysicalMaterial( {
-		color: diffuseColor,
+	var material = new THREE.MeshStandardMaterial( {
+		color: '#ff0000',
 		metalness: 0,
-		roughness: 0.5,
-		clearCoat:  1.0 - 0,
-		clearCoatRoughness: 1.0 - 0,
-		reflectivity: 1.0 - 0,
+		roughness: 0,
 	} );
 
   var extrudedSteps = function( group ) {
@@ -34,7 +30,7 @@
 	};
 
 
-    angular.module('welpCAD').directive('assemblyRendererDirective', function($rootScope){
+    angular.module('welpCAD').directive('assemblyRendererDirective', function($rootScope, $timeout){
       return {
         //scope allows us to setup variable bindings to the parent scope. By default, we share the parent scope. For an isolated one, we should
         //pass an object as the scope attribute which has a dict of the variable name for us, and a string describing where and how to bind it.
@@ -44,7 +40,7 @@
         },
         //restrict E means its can only be used as an element.
         restrict: 'E',
-        template: '<div id="assemblerRenderArea"></div>',
+        template: '<div id="assemblerRenderContainer" style="height: 80%;"><div id="assemblerRenderArea"></div></div>',
         link: function($scope, elem, attrs) {
           // scope = either parent scope or its own child scope if scope set.
           // elem = jqLite wrapped element of: root object inside the template, so we can setup event handlers etc
@@ -54,7 +50,7 @@
           function init(){
             $scope.renderArea = document.getElementById('assemblerRenderArea');
             $scope.scene = new THREE.Scene();
-            $scope.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            $scope.camera = new THREE.PerspectiveCamera( 75, 550 / 450.0, 0.1, 1000 );
             $scope.renderer = new THREE.WebGLRenderer({ antialias: true });
             $scope.renderer.setSize( 550, 450 );
             $scope.renderer.setClearColor( 0xffffff );
@@ -68,11 +64,27 @@
             $scope.controls = new THREE.TrackballControls( $scope.camera, $scope.renderer.domElement );
     				//$scope.controls.minDistance = 200; //$scope.controls.maxDistance = 500;
 
-            $scope.scene.add( new THREE.HemisphereLight( 0x606060, 0x404040, 4 ) );
-    				bulbLight = new THREE.PointLight( 0xffee88, 8, 2000, 2 );
-            bulbLight.position.set( 6, 6, 6 );
-            $scope.scene.add(bulbLight);
+            $scope.ambientLight = new THREE.AmbientLight( 0x000000 );
+      			$scope.scene.add( $scope.ambientLight );
+
+      			$scope.lights = [];
+      			$scope.lights[ 0 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+      			$scope.lights[ 1 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+      			$scope.lights[ 2 ] = new THREE.PointLight( 0xffffff, 1, 0 );
+      			$scope.lights[ 0 ].position.set( 0, 200, 0 );
+      			$scope.lights[ 1 ].position.set( 100, 200, 100 );
+      			$scope.lights[ 2 ].position.set( - 100, - 200, - 100 );
+      			$scope.scene.add( $scope.lights[ 0 ] );
+      			$scope.scene.add( $scope.lights[ 1 ] );
+      			$scope.scene.add( $scope.lights[ 2 ] );
+
             $scope.camera.position.z = 5;
+          }
+
+          function applySize(width, height){
+            $scope.camera.aspect = width /height;
+        		$scope.camera.updateProjectionMatrix();
+        		$scope.renderer.setSize( width, height );
           }
 
           function render() {
@@ -81,12 +93,19 @@
           	$scope.renderer.render( $scope.scene, $scope.camera );
           }
 
+          $scope.applyRender = function(){
+            var container = document.getElementById('assemblerRenderContainer');
+            applySize(container.offsetWidth, container.offsetHeight);
+          }
+
           init();
+
           var cube = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ), material );
           $scope.scene.add( cube );
-          group = new THREE.Group();
-          $scope.scene.add( group );
-          extrudedSteps( group );
+          //group = new THREE.Group();
+          //$scope.scene.add( group );
+          //extrudedSteps( group );
+
           render();
         }
       };
