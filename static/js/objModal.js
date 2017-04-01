@@ -89,7 +89,7 @@
 $scope.isEditMode = false;
           //Sets model back to default values
           function reset(){
-            $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = [];
+            $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = $scope.radiusValidation = [];
             $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
             $scope.pos = {x: '', y: ''};
             $scope.size = {width: '', height: ''};
