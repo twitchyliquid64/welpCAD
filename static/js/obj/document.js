@@ -1,5 +1,5 @@
 function Document (name, nameRegister, objs) {
-    this.name = name || 'Untitled';
+    this.name = name || null;
     this.nameRegister = nameRegister || {};
     this.objs = objs || [];
 }
@@ -56,9 +56,23 @@ Document.prototype.isBaseObject = function(obj){
   return this.getObjs().length && this.getObjs()[0].name == obj.name;
 }
 
+Document.prototype.getSerializable = function(){
+  var c = [];
+  var objs = this.getObjs();
+  for(var i = 0;i < objs.length; i++){
+    c[c.length] = {cType: objs[i].componentType, parameters: objs[i].getSerializable()};
+  }
+
+  return {
+    name: this.name,
+    nameRegister: this.nameRegister,
+    components: c,
+  };
+}
 
 
-// Returns a paper.js CompoundPath for render.
+
+// Returns a paper.js CompoundPath for 2d render.
 Document.prototype.getDrawable = function(paperSurface, options){
   var objs = this.getObjs();
   var root = undefined;
@@ -95,6 +109,7 @@ function applyCurveToPath(path, curve, lastPoint){
   return p2;
 }
 
+// Returns a THREE.ShapePath which can be extruded to form a 3d geometry.
 Document.prototype.getRenderable = function(paperOptions, pathOptions){
   var drawable = this.getDrawable(paper, paperOptions);
   var path = new THREE.ShapePath();

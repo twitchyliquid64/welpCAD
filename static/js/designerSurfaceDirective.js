@@ -155,14 +155,12 @@
           }
           function canvasKeyDownEvent(event){
             if (!$scope.selectedName)return;
-            console.log(event);
             switch (event.key){
               case 'escape': //escape - deselect current element
                 setSelected('');
                 return;
               case 'e': //edit current element
                 var o = $scope.document.getObjectByName($scope.selectedName);
-                console.log(o);
                 $rootScope.$broadcast('do-obj-edit', {obj: o});
                 setSelected('');
                 $rootScope.$digest();

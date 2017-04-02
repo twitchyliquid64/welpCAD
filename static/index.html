@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/libs/three.min.js"></script>
     <script type="text/javascript" src="js/libs/threestats.min.js"></script>
     <script type="text/javascript" src="js/libs/three.trackballcontrols.js"></script>
+    <script type="text/javascript" src="js/libs/filesaver.min.js"></script>
 
     <!-- load code for our object model -->
     <script type="text/javascript" src="js/obj/rect.js"></script>
@@ -40,13 +41,13 @@
   <nav class="deep-orange lighten-1" role="navigation">
     <div class="nav-wrapper"><a id="logo-container" href="#" class="brand-logo"><i class="material-icons">aspect_ratio</i> welpCAD</a>
       <ul class="right hide-on-med-and-down">
-        <li ng-class="{active: page == 'home'}"><a href="#" ng-click="changePage('home')">Home</a></li>
+        <li ng-class="{active: page == 'home'}"><a href="#" ng-click="changePage('home')">Project</a></li>
         <li ng-class="{active: page == 'designer'}"><a href="#" ng-click="changePage('designer')">Designer</a></li>
         <li ng-class="{active: page == 'assembler'}"><a href="#" ng-click="changePage('assembler')">Assembler</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#" ng-click="changePage('home')">Home</a></li>
+        <li><a href="#" ng-click="changePage('home')">Project</a></li>
         <li><a href="#" ng-click="changePage('designer')">Designer</a></li>
         <li><a href="#" ng-click="changePage('assembler')">Assembler</a></li>
       </ul>
@@ -67,7 +68,15 @@
               <designer-surface-directive document="document"></designer-surface-directive>
             </div>
             <div class="col s5 section">
-              <h5 style="display: inline-block;">Components</h5>
+              <div class="design-header">
+              <h5 class="valign" ng-if="!document.name">Unnamed Design</h5>
+              <h5 class="valign" ng-if="document.name">{{document.name}}</h5>
+
+              <a class="btn-floating btn-medium waves-effect waves-light teal right"><i class="material-icons">edit</i></a>
+
+              </div>
+
+              <h6>Components</h6>
 
               <ul class="collection">
                 <li class="collection-item avatar" style="min-height: 70px;" ng-repeat="obj in document.getObjs()">
@@ -84,13 +93,14 @@
                          get-suggested-name-callback="document.suggestName(componentType)"
                          edit-obj-callback="editObjectCallback(component, oldName)"></obj-modal>
               <div class="fixed-action-btn">
-                <a href="#" class="btn-floating btn-large red" ng-click="newObjButtonPressed()">
+                <a href="#" class="btn-floating btn-large red tooltipped" ng-click="newObjButtonPressed()" data-position="left" data-delay="50" data-tooltip="Add component">
                   <i class="large material-icons">add</i>
                 </a>
                 <ul>
-                  <li><a class="btn-floating red"><i class="material-icons">insert_chart</i></a></li>
-                  <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
-                  <li><a class="btn-floating green" ng-click="debugPressed()"><i class="material-icons">publish</i></a></li>
+                  <li><a class="btn-floating blue tooltipped" ng-click="importPressed()" data-position="left" data-delay="50" data-tooltip="Import Design"><i class="material-icons">attach_file</i></a></li>
+                  <li><a class="btn-floating red tooltipped" ng-click="exportPressed()" data-position="left" data-delay="50" data-tooltip="Export Design"><i class="material-icons">file_download</i></a></li>
+                  <li><a class="btn-floating yellow darken-1 tooltipped" ng-click="savePressed()" data-position="left" data-delay="50" data-tooltip="Save Design"><i class="material-icons">save</i></a></li>
+                  <li><a class="btn-floating green tooltipped" ng-click="previewPressed()" data-position="left" data-delay="50" data-tooltip="Preview Design"><i class="material-icons">visibility</i></a></li>
                 </ul>
               </div>
             </div>

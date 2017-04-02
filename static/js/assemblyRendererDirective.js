@@ -1,34 +1,10 @@
 (function () {
 
-	var material = new THREE.MeshStandardMaterial( {
-		color: '#ff0000',
-		metalness: 0,
-		roughness: 0,
-	} );
-
-  var extrudedSteps = function( group ) {
-
-	    var shape = new THREE.Shape();
-	    shape.moveTo( 0, 0 );
-	    var numSteps = 3, stepSize = 1;
-
-	    for ( var i = 0; i < numSteps; i ++ ) {
-
-		    shape.lineTo( i * stepSize, ( i + 1 ) * stepSize );
-		    shape.lineTo( ( i + 1 ) * stepSize, ( i + 1 ) * stepSize );
-		    console.log( )
-
-	    }
-
-	    var extrudeSettings = { amount: 3, bevelEnabled: false };
-	    var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-
-	    var material = new THREE.MeshLambertMaterial( {color: 0xffffff } );
-	    var steps = new THREE.Mesh( geometry, material );
-	    group.add( steps );
-
-	};
-
+		var material = new THREE.MeshStandardMaterial( {
+			color: '#ff0000',
+			metalness: 0,
+			roughness: 0,
+		} );
 
     angular.module('welpCAD').directive('assemblyRendererDirective', function($rootScope, $timeout){
       return {
@@ -102,6 +78,8 @@
             if ($scope.startingGraphic){
               $scope.scene.remove($scope.startingGraphic);
               $scope.startingGraphic = undefined;
+							var container = document.getElementById('assemblerRenderContainer');
+	            applySize(container.offsetWidth, container.offsetHeight);
             }
 
             for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
