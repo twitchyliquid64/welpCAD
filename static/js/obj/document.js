@@ -56,19 +56,7 @@ Document.prototype.isBaseObject = function(obj){
   return this.getObjs().length && this.getObjs()[0].name == obj.name;
 }
 
-Document.prototype.getSerializable = function(){
-  var c = [];
-  var objs = this.getObjs();
-  for(var i = 0;i < objs.length; i++){
-    c[c.length] = {cType: objs[i].componentType, parameters: objs[i].getSerializable()};
-  }
 
-  return {
-    name: this.name,
-    nameRegister: this.nameRegister,
-    components: c,
-  };
-}
 
 
 
@@ -135,4 +123,39 @@ Document.prototype.getRenderable = function(paperOptions, pathOptions){
 
   console.log(drawable, path);
   return path;
+}
+
+
+
+
+Document.prototype.getSerializable = function(){
+  var c = [];
+  var objs = this.getObjs();
+  for(var i = 0;i < objs.length; i++){
+    c[c.length] = {cType: objs[i].componentType, parameters: objs[i].getSerializable()};
+  }
+
+  return {
+    name: this.name,
+    nameRegister: this.nameRegister,
+    components: c,
+  };
+}
+
+function buildComponentFromSpec(spec){
+  switch (spec.cType){
+    case 'rect':
+      return new Rect(...spec.parameters);
+    case 'circle':
+      return new Circle(...spec.parameters);
+  }
+}
+
+function loadDocumentFromJsonData(jsonData) {
+  var d = JSON.parse(jsonData);
+  var components = [];
+  for (var i = 0; i < d.components.length; i++){
+    components[components.length] = buildComponentFromSpec(d.components[i]);
+  }
+  return new Document(d.name, d.nameRegister, components);
 }

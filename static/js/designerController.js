@@ -42,6 +42,18 @@
         console.log(e);
         $rootScope.$broadcast('design-save', {design: e});
       }
+      $scope.importPressed = function(){
+        console.log('a');
+        $rootScope.$broadcast('file-open-request', {
+          title: 'Open Design',
+          onOpen: function(fileObj){
+            var obj = loadDocumentFromJsonData(fileObj);
+            console.log(obj);
+            $scope.document = obj;
+            $scope.$broadcast('document-change');
+          },
+        });
+      }
       // Invoked when the export button is pressed - save to disk
       $scope.exportPressed = function(){
         var e = $scope.document.getSerializable();

@@ -1,0 +1,26 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='fileSelectDialogModal' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="fileSelectDialogModal" class="modal" style="max-height: 85%;">
+  <div class="modal-content">
+    <h4>{{title}}</h4>
+    <p>{{content}}</p>
+
+    <form action="#">
+      <div class="file-field input-field">
+        <div class="btn">
+          <span>File</span>
+          <input type="file" id="file-select-modal-input">
+        </div>
+        <div class="file-path-wrapper">
+          <input class="file-path validate" type="text">
+        </div>
+      </div>
+    </form>
+
+
+  <div class="modal-footer">
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCancel()"><i class="material-icons left">cancel</i>Cancel</a>
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-class="{disabled: !fileRead}" ng-click="onOpen()"><i class="material-icons left">save</i>Open</a>
+  </div>
+</div>
