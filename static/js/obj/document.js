@@ -83,7 +83,7 @@ Document.prototype.getDrawable = function(paperSurface, options){
 function applyCurveToPath(path, curve, lastPoint){
   var points = curve.points;
   var p1 = points[0];
-  var p2 = points[2];
+  var p2 = points[3];
   if (!p1.equals(lastPoint)){
     path.moveTo(p1.x, p1.y);
   }
