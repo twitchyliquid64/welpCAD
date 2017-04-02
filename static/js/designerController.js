@@ -1,13 +1,12 @@
 (function () {
 
     angular.module('welpCAD')
-        .controller('designerController', ['$scope', 'dataService', '$rootScope', designerController]);
+        .controller('designerController', ['$scope', 'dataService', '$rootScope', '$timeout', designerController]);
 
-    function designerController($scope, dataService, $rootScope) {
+    function designerController($scope, dataService, $rootScope, $timeout) {
       var self = this;
       $scope.dataService = dataService;
 
-      $scope.newObjectModalOpen = false;
       $scope.document = new Document();
       $scope.selectedName = '';
 
@@ -24,12 +23,16 @@
         $scope.document.applyEdit(oldName, component);
         $scope.$broadcast('document-change');
       }
+      // Called from modal when edit wants a name for a given componentType.
+      $scope.suggestNameCallback = function(component){
+        return $scope.document.suggestName(component);
+      }
 
 
 
       // Invoked when the Add FAB is pressed.
       $scope.newObjButtonPressed = function(){
-        $scope.newObjectModalOpen = true;
+        $rootScope.$broadcast('open-new-object-modal', {});
       }
       // Invoked when the preview button is pressed.
       $scope.previewPressed = function(){
@@ -50,7 +53,9 @@
             var obj = loadDocumentFromJsonData(fileObj);
             console.log(obj);
             $scope.document = obj;
-            $scope.$broadcast('document-change');
+            $timeout(function(){
+              $scope.$broadcast('document-change');
+            }, 400);
           },
         });
       }

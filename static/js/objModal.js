@@ -13,7 +13,6 @@
         //scope: {color: '@colorAttr'} binds 'color' to the value of color-attr with a one way binding. Only strings supported here: color-attr="{{color}}"
         //scope: {color: '=color'} binds 'color' two way. Pass the object here: color="color".
         scope: {
-          open: '=',
           newObjCallback: '&',
           editObjCallback: '&',
           getSuggestedNameCallback: '&',
@@ -34,6 +33,7 @@
           $scope.size = {width: '', height: '', radius: ''};
           $scope.name = '';
           $scope.lastSuggestedName = '';
+          $scope.open = false;
 
           //Edit mode only
           $scope.isEditMode = false;
@@ -90,11 +90,12 @@
           //Sets model back to default values
           function reset(){
             $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = $scope.radiusValidation = [];
-            $scope.name = $scope.lastSuggestedName = $scope.getSuggestedNameCallback({componentType: $scope.typeSelected});
             $scope.pos = {x: '', y: ''};
             $scope.size = {width: '', height: ''};
             $scope.combinationOperation = 'add';
             $scope.isEditMode = false;
+            $scope.name = '';
+            $scope.lastSuggestedName = '';
           }
 
           function saveObject(obj){
@@ -123,9 +124,14 @@
 
           // Called when the modal is dismissed
           $scope.onModalComplete = function(){
-            console.log('onModalComplete');
             reset();
           }
+
+
+          $scope.$on('open-new-object-modal', function(event, args) {
+            paint();
+            $scope.open = true;
+          });
 
           // Called from the designerController when it wants us to edit an existing object
           $scope.$on('do-obj-edit', function(event, args) {

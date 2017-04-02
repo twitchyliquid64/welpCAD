@@ -90,9 +90,8 @@
                 </li>
               </ul>
 
-              <obj-modal open="newObjectModalOpen"
-                         new-obj-callback="newObjectCallback(component)"
-                         get-suggested-name-callback="document.suggestName(componentType)"
+              <obj-modal new-obj-callback="newObjectCallback(component)"
+                         get-suggested-name-callback="suggestNameCallback(componentType)"
                          edit-obj-callback="editObjectCallback(component, oldName)"></obj-modal>
               <div class="fixed-action-btn">
                 <a href="#" class="btn-floating btn-large red tooltipped" ng-click="newObjButtonPressed()" data-position="left" data-delay="50" data-tooltip="Add component">
