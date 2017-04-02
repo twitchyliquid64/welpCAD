@@ -47,10 +47,26 @@
         var e = $scope.document.getSerializable();
         console.log(e);
         var blob = new Blob([JSON.stringify(e)], {type: "application/json;charset=utf-8"});
-        saveAs(blob, $scope.document.name + ".json");
+
+        if (!$scope.document.name){
+          $rootScope.$broadcast('check-confirmation', {
+            title: 'Your Design is unnamed',
+            content: 'You have requested an export of a document which has no name. You can set the name in the design menu, which can be accessed with the edit button in the top right of the designer. Would you like to export without a name anyway?',
+            actions: [
+              {text: 'No'},
+              {text: 'Yes', onAction: function(){saveAs(blob, "design.json");}},
+              {text: 'Goto Design Menu', onAction: $scope.editDocument},
+            ]
+          });
+        }else {
+          saveAs(blob, $scope.document.name + ".json");
+        }
+      }
+      $scope.editDocument = function() {
+
       }
       // Called when the edit button of a component is pressed.
-      $scope.edit = function(obj) {
+      $scope.editComponent = function(obj) {
         $scope.$broadcast('do-obj-edit', {obj: obj});
       }
       // Called when the operation indicator is pressed.

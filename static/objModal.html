@@ -11,12 +11,12 @@
       <div class="row" style="margin-bottom: 2px;"><!-- Type selector -->
         <div class="col s5">
           <p>
-            <input class="with-gap" name="typeSelector" type="radio" id="rectSelector" ng-click="setType('rect')" checked />
+            <input class="with-gap" name="typeSelector" type="radio" id="rectSelector" ng-click="setType('rect')" ng-checked="typeSelected=='rect'" />
             <label for="rectSelector">Rectangle</label>
           </p>
 
           <p>
-            <input class="with-gap" name="typeSelector" type="radio" id="circSelector" ng-click="setType('circle')"  />
+            <input class="with-gap" name="typeSelector" type="radio" id="circSelector" ng-click="setType('circle')" ng-checked="typeSelected=='circle'" />
             <label for="circSelector">Circle</label>
           </p>
         </div>

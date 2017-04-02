@@ -34,6 +34,7 @@
     <script type="text/javascript" src="js/componentDetailDirective.js"></script>
     <script type="text/javascript" src="js/designerSurfaceDirective.js"></script>
     <script type="text/javascript" src="js/assemblyRendererDirective.js"></script>
+    <script type="text/javascript" src="js/confirmationDialogModal.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController">
@@ -55,7 +56,7 @@
     </div>
   </nav>
 
-    <div >
+    <div>
       <div ng-show="page=='home'">
         <div class="section" ng-controller="homeController">
         </div>
@@ -84,7 +85,7 @@
                   <i class="op-indicator" ng-class="{amber: obj.combinationOperation=='sub'}" ng-click="cycleCombinationOperations(obj)"></i>
                   <span class="title">{{obj.name}}</span>
                   <component-detail-directive obj="obj"></component-detail-directive>
-                  <a href="#" class="secondary-content" ng-click="edit(obj)"><i class="material-icons">edit</i></a>
+                  <a href="#" class="secondary-content" ng-click="editComponent(obj)"><i class="material-icons">edit</i></a>
                 </li>
               </ul>
 
@@ -126,6 +127,7 @@
         </div>
       </div>
 
+      <confirmation-dialog-modal></confirmation-dialog-modal>
     </div>
 
 

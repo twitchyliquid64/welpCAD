@@ -86,7 +86,7 @@
             return !combined.includes('invalid');
           };
 
-$scope.isEditMode = false;
+
           //Sets model back to default values
           function reset(){
             $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = $scope.radiusValidation = [];
@@ -141,6 +141,7 @@ $scope.isEditMode = false;
             $scope.combinationOperation = args.obj.getCombinationOperation();
             $scope.isEditMode = true;
             $scope.open = true;
+            paint();
           });
 
           paint();
