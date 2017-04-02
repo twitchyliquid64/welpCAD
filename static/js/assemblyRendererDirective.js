@@ -78,8 +78,10 @@
             if ($scope.startingGraphic){
               $scope.scene.remove($scope.startingGraphic);
               $scope.startingGraphic = undefined;
-							var container = document.getElementById('assemblerRenderContainer');
-	            applySize(container.offsetWidth, container.offsetHeight);
+							$timeout(function(){
+								var container = document.getElementById('assemblerRenderContainer');
+								applySize(container.offsetWidth, container.offsetHeight);
+							}, 500);
             }
 
             for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
