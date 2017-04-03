@@ -34,17 +34,22 @@
       $scope.newObjButtonPressed = function(){
         $rootScope.$broadcast('open-new-object-modal', {});
       }
-      // Invoked when the preview button is pressed.
+      // Invoked when the preview button FAB is pressed.
       $scope.previewPressed = function(){
-        $rootScope.$broadcast('assembler-preview-path', {path: $scope.document.getRenderable({fill: '#ffe0b2'}, {fill: '#ffe0b2'})});
+        $rootScope.$broadcast('assembler-preview-path', {
+          path: $scope.document.getRenderable({fill: '#ffe0b2'}, {fill: '#ffe0b2'}),
+          thickness: $scope.document.thickness || 3,
+          color: $scope.document.renderColor || '#ff0000',
+        });
         $scope.changePage('assembler');
       }
-      // Invoked when the save button is pressed - save to dataService.
+      // Invoked when the save button FAB is pressed - save to dataService.
       $scope.savePressed = function(){
         var e = $scope.document.getSerializable();
         console.log(e);
         $rootScope.$broadcast('design-save', {design: e});
       }
+      // Invoked when the import button FAB is pressed - load JSON design from file.
       $scope.importPressed = function(){
         console.log('a');
         $rootScope.$broadcast('file-open-request', {
@@ -59,7 +64,7 @@
           },
         });
       }
-      // Invoked when the export button is pressed - save to disk
+      // Invoked when the export button FAB is pressed - save JSON to disk
       $scope.exportPressed = function(){
         var e = $scope.document.getSerializable();
         console.log(e);
@@ -79,8 +84,9 @@
           saveAs(blob, $scope.document.name + ".json");
         }
       }
+      // Invoked when the edit button is pressed on the top right of the page.
       $scope.editDocument = function() {
-
+        $scope.$broadcast('edit-design-open', {});
       }
       // Called when the edit button of a component is pressed.
       $scope.editComponent = function(obj) {

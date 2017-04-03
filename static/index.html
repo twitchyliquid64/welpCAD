@@ -36,6 +36,7 @@
     <script type="text/javascript" src="js/assemblyRendererDirective.js"></script>
     <script type="text/javascript" src="js/confirmationDialogModal.js"></script>
     <script type="text/javascript" src="js/fileSelectModal.js"></script>
+    <script type="text/javascript" src="js/editDesignModal.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController">
@@ -74,7 +75,7 @@
               <h5 class="valign" ng-if="!document.name">Unnamed Design</h5>
               <h5 class="valign" ng-if="document.name">{{document.name}}</h5>
 
-              <a class="btn-floating btn-medium waves-effect waves-light teal right"><i class="material-icons">edit</i></a>
+              <a class="btn-floating btn-medium waves-effect waves-light teal right" ng-click="editDocument()"><i class="material-icons">edit</i></a>
 
               </div>
 
@@ -93,6 +94,7 @@
               <obj-modal new-obj-callback="newObjectCallback(component)"
                          get-suggested-name-callback="suggestNameCallback(componentType)"
                          edit-obj-callback="editObjectCallback(component, oldName)"></obj-modal>
+              <edit-design-modal document="document"></edit-design-modal>
               <div class="fixed-action-btn">
                 <a href="#" class="btn-floating btn-large red tooltipped" ng-click="newObjButtonPressed()" data-position="left" data-delay="50" data-tooltip="Add component">
                   <i class="large material-icons">add</i>

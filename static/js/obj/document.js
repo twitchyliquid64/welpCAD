@@ -1,7 +1,11 @@
-function Document (name, nameRegister, objs) {
+function Document (name, nameRegister, objs, author, thickness, revision, color) {
     this.name = name || null;
     this.nameRegister = nameRegister || {};
     this.objs = objs || [];
+    this.author = author;
+    this.thickness = thickness;
+    this.revision = revision;
+    this.renderColor = color;
 }
 
 // Sets its name - takes a string
@@ -138,6 +142,10 @@ Document.prototype.getSerializable = function(){
   return {
     name: this.name,
     nameRegister: this.nameRegister,
+    author: this.author,
+    revision: this.revision,
+    thickness: this.thickness,
+    renderColor: this.renderColor,
     components: c,
   };
 }
@@ -157,5 +165,5 @@ function loadDocumentFromJsonData(jsonData) {
   for (var i = 0; i < d.components.length; i++){
     components[components.length] = buildComponentFromSpec(d.components[i]);
   }
-  return new Document(d.name, d.nameRegister, components);
+  return new Document(d.name, d.nameRegister, components, d.author, d.thickness, d.revision, d.renderColor);
 }

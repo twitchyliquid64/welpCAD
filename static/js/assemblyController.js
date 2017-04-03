@@ -19,7 +19,7 @@
 
       $rootScope.$on('assembler-preview-path', function(event, args){
         $scope.isPreviewMode = true;
-        $scope.$broadcast('render-only', {path: args.path});
+        $scope.$broadcast('render-only', {path: args.path, thickness: args.thickness, color: args.color});
       });
     }
 })();

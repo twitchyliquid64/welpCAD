@@ -99,8 +99,13 @@
           });
           $scope.$on('render-only', function(event, args) {
             var shapes = args.path.toShapes(true);
-            var solid = new THREE.ExtrudeGeometry(shapes, { amount: args.amount || 3, bevelEnabled: false });
-            var mesh = new THREE.SceneUtils.createMultiMaterialObject(solid, [material]);
+						var localMaterial = new THREE.MeshStandardMaterial({
+							color: args.color,
+							metalness: 0,
+							roughness: 0,
+						});
+            var solid = new THREE.ExtrudeGeometry(shapes, { amount: args.thickness, bevelEnabled: false });
+            var mesh = new THREE.SceneUtils.createMultiMaterialObject(solid, [localMaterial]);
             $scope.applyRender([mesh]);
           });
 
