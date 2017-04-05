@@ -110,6 +110,7 @@
 
             console.log(o);
             $scope.$broadcast('document-change');
+            $rootScope.$broadcast('document-change-model');
             $rootScope.$digest();
           }
 
@@ -130,6 +131,7 @@
               }
             }
             $scope.$broadcast('document-change');
+            $rootScope.$broadcast('document-change-model');
             $rootScope.$digest();
           }
 
@@ -154,6 +156,12 @@
             return false;
           }
           function canvasKeyDownEvent(event){
+            if(event.key == 's' && event.modifiers.control) {
+              $rootScope.$broadcast('document-do-save');
+              event.preventDefault();
+              return;
+            }
+
             if (!$scope.selectedName)return;
             switch (event.key){
               case 'escape': //escape - deselect current element

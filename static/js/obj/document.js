@@ -12,6 +12,9 @@ function Document (name, nameRegister, objs, author, thickness, revision, color)
 Document.prototype.setName = function(name) {
   this.name = name;
 }
+Document.prototype.getName = function() {
+  return this.name;
+}
 
 // Gets a name which has not be taken yet.
 Document.prototype.suggestName = function(componentType) {
@@ -159,11 +162,15 @@ function buildComponentFromSpec(spec){
   }
 }
 
-function loadDocumentFromJsonData(jsonData) {
-  var d = JSON.parse(jsonData);
+function loadDocumentFromObj(d){
   var components = [];
   for (var i = 0; i < d.components.length; i++){
     components[components.length] = buildComponentFromSpec(d.components[i]);
   }
   return new Document(d.name, d.nameRegister, components, d.author, d.thickness, d.revision, d.renderColor);
+}
+
+function loadDocumentFromJsonData(jsonData) {
+  var d = JSON.parse(jsonData);
+  return loadDocumentFromObj(d);
 }

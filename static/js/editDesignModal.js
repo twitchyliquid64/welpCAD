@@ -28,6 +28,7 @@
           });
 
           $scope.onClose = function(){
+            $rootScope.$broadcast('document-change-model');
             $scope.open = false;
           }
 

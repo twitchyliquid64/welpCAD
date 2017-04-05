@@ -89,9 +89,22 @@
             }
             for (var i = 0; i < meshes.length; i++)
               $scope.mainMeshes.add(meshes[i]);
-          }
+          };
 
 
+					$scope.$on('reset-assembly-render', function(event, args) {
+						for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
+                $scope.mainMeshes.remove($scope.mainMeshes.children[i]);
+            }
+						$scope.camera.position.z = 550;
+						$scope.camera.position.x = 0;
+						$scope.camera.position.y = 0;
+
+						var tx = new THREE.TextGeometry('welpCAD', {font: $scope.fontRes});
+						THREE.GeometryUtils.center( tx );
+						$scope.startingGraphic = new THREE.Mesh( tx, material );
+						$scope.scene.add( $scope.startingGraphic );
+          });
 
           $scope.$on('resize-assembler-renderer', function(event, args) {
             var container = document.getElementById('assemblerRenderContainer');
@@ -116,6 +129,7 @@
 
           var loader = new THREE.FontLoader();
          loader.load('/fonts/helvetiker_regular.typeface.json', function (res) {
+					 $scope.fontRes = res;
            var tx = new THREE.TextGeometry('welpCAD', {font: res});
            THREE.GeometryUtils.center( tx );
            $scope.startingGraphic = new THREE.Mesh( tx, material );

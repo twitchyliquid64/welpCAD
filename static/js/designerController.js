@@ -9,6 +9,7 @@
 
       $scope.document = new Document();
       $scope.selectedName = '';
+      $scope.dirty = false;
 
 
       // Called from modal with a new object to be added in.
@@ -16,12 +17,14 @@
         console.log(obj);
         $scope.document.add(obj);
         $scope.$broadcast('document-change');
+        $scope.dirty = true;
       }
       // Called from modal when an edit operation has completed.
       $scope.editObjectCallback = function(component, oldName){
         console.log(component, oldName);
         $scope.document.applyEdit(oldName, component);
         $scope.$broadcast('document-change');
+        $scope.dirty = true;
       }
       // Called from modal when edit wants a name for a given componentType.
       $scope.suggestNameCallback = function(component){
@@ -45,9 +48,8 @@
       }
       // Invoked when the save button FAB is pressed - save to dataService.
       $scope.savePressed = function(){
-        var e = $scope.document.getSerializable();
-        console.log(e);
-        $rootScope.$broadcast('design-save', {design: e});
+        $rootScope.$broadcast('design-save', {design: $scope.document});
+        $scope.dirty = false;
       }
       // Invoked when the import button FAB is pressed - load JSON design from file.
       $scope.importPressed = function(){
@@ -58,6 +60,7 @@
             var obj = loadDocumentFromJsonData(fileObj);
             console.log(obj);
             $scope.document = obj;
+            $scope.dirty = true;
             $timeout(function(){
               $scope.$broadcast('document-change');
             }, 400);
@@ -98,6 +101,7 @@
           console.log("Base object must be addition type");
           return;
         }
+        $scope.dirty = true;
 
         switch (obj.combinationOperation){
           case "add":
@@ -121,6 +125,21 @@
         console.log('selected', args);
         $scope.selectedName = args.objName;
         $scope.$digest();
+      });
+      $rootScope.$on('document-change-model', function(event, args) {
+        $scope.dirty = true;
+      });
+      $rootScope.$on('document-do-save', function(event, args) {
+        $scope.savePressed();
+        $scope.$digest();
+      });
+
+      $rootScope.$on('set-designer-design', function(event, args) {
+        $scope.dirty = false;
+        $scope.document = args.design;
+        $timeout(function(){
+          $scope.$broadcast('document-change');
+        }, 400);
       });
     }
 })();
