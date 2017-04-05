@@ -12,7 +12,7 @@ Assembly.prototype.getName = function() {
 }
 
 
-Document.prototype.getSerializable = function(){
+Assembly.prototype.getSerializable = function(){
   var c = [];
   for(var i = 0;i < this.components.length; i++){
     c[c.length] = {cType: this.components[i].componentType, parameters: this.components[i].getSerializable()};
