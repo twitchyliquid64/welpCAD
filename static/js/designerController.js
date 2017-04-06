@@ -134,6 +134,12 @@
         $scope.$digest();
       });
 
+      $rootScope.$on('designer-delete-component', function(event, args) {
+        $scope.dirty = true;
+        $scope.document.delete(args.name);
+        $scope.$broadcast('document-change');
+      });
+
       $rootScope.$on('set-designer-design', function(event, args) {
         $scope.dirty = false;
         $scope.document = args.design;

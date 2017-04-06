@@ -6,7 +6,7 @@
 			roughness: 0,
 		} );
 
-    angular.module('welpCAD').directive('assemblyRendererDirective', function($rootScope, $timeout){
+    angular.module('welpCAD').directive('assemblyRendererDirective', ['$rootScope', '$timeout', 'dataService', function($rootScope, $timeout, $dataService){
       return {
         //scope allows us to setup variable bindings to the parent scope. By default, we share the parent scope. For an isolated one, we should
         //pass an object as the scope attribute which has a dict of the variable name for us, and a string describing where and how to bind it.
@@ -73,20 +73,22 @@
           	$scope.renderer.render( $scope.scene, $scope.camera );
           }
 
-          //Called with meshes to render
+          //Called with meshes to render - overwrites/deletes existing objects in the scene
           $scope.applyRender = function(meshes){
-            if ($scope.startingGraphic){
+            if ($scope.startingGraphic){ //If the default graphic is displayed, kill it
               $scope.scene.remove($scope.startingGraphic);
               $scope.startingGraphic = undefined;
 							$timeout(function(){
 								var container = document.getElementById('assemblerRenderContainer');
 								applySize(container.offsetWidth, container.offsetHeight);
-							}, 500);
+							}, 300);
             }
 
+						// Delete all existing objects from the scene group
             for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
                 $scope.mainMeshes.remove($scope.mainMeshes.children[i]);
             }
+						// Add new objects to the scene group
             for (var i = 0; i < meshes.length; i++)
               $scope.mainMeshes.add(meshes[i]);
           };
@@ -106,20 +108,27 @@
 						$scope.scene.add( $scope.startingGraphic );
           });
 
+					function meshFromPath(path, color, thickness){
+						var shapes = path.toShapes(true);
+						var localMaterial = new THREE.MeshStandardMaterial({
+							color: color,
+							metalness: 0,
+							roughness: 0,
+						});
+						var solid = new THREE.ExtrudeGeometry(shapes, { amount: thickness, bevelEnabled: false });
+						return new THREE.SceneUtils.createMultiMaterialObject(solid, [localMaterial]);
+					}
+
           $scope.$on('resize-assembler-renderer', function(event, args) {
             var container = document.getElementById('assemblerRenderContainer');
             applySize(container.offsetWidth, container.offsetHeight);
           });
           $scope.$on('render-only', function(event, args) {
-            var shapes = args.path.toShapes(true);
-						var localMaterial = new THREE.MeshStandardMaterial({
-							color: args.color,
-							metalness: 0,
-							roughness: 0,
-						});
-            var solid = new THREE.ExtrudeGeometry(shapes, { amount: args.thickness, bevelEnabled: false });
-            var mesh = new THREE.SceneUtils.createMultiMaterialObject(solid, [localMaterial]);
-            $scope.applyRender([mesh]);
+            $scope.applyRender([meshFromPath(args.path, args.color, args.thickness)]);
+          });
+					$scope.$on('render-assembly', function(event, args) {
+            $scope.assembly = args.assembly;
+						$scope.applyRender($scope.assembly.getRenderables($dataService, {}));
           });
 
 
@@ -139,5 +148,5 @@
           render();
         }
       };
-  });
+  }]);
 })();

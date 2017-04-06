@@ -1,5 +1,5 @@
 
-//OBJECTS:
+//DESIGN OBJECTS:
 //.pos - (paper.Point)
 //.name - (string)
 //.icon - (string)
@@ -19,3 +19,10 @@
 //Circles:
 //setRadius(radius)
 //getRadius()
+
+
+//ASSEMBLY OBJECTS:
+//.name
+//.componentType
+//getRenderable(dataProvider, opts)
+//getSerializable()

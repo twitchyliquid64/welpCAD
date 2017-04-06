@@ -19,6 +19,11 @@
           $scope.changePage('designer');
       };
 
+      $scope.loadAssembly = function(assemblyName){
+        if ($scope.dataService.loadAssembly(assemblyName))
+          $scope.changePage('assembler');
+      };
+
       $scope.importPressed = function(){
         $rootScope.$broadcast('file-open-request', {
           title: 'Open Project',
@@ -40,6 +45,12 @@
         $scope.dataService.saveDesign(new Document(name));
         $scope.dataService.loadDesign(name);
         $scope.changePage('designer');
+      };
+
+      $scope.newAssembly = function() {
+        var name = prompt("Enter a name for your assembly");
+        if (!name)return;
+        $scope.dataService.saveAssembly(new Assembly(name));
       };
 
       $scope.newProject = function() {

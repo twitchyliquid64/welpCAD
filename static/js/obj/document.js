@@ -34,6 +34,16 @@ Document.prototype.add = function(obj) {
   this.objs[this.objs.length] = obj;
 }
 
+// Deletes an object from the document.
+Document.prototype.delete = function(name) {
+  for (var i = 0; i < this.objs.length; i++) {
+    if (this.objs[i].name == name){
+      this.objs.splice(i, 1);
+      return;
+    }
+  }
+}
+
 // Handles an edit
 //TODO: Error out if oldName != obj.name && obj.name already exists elsewhere
 Document.prototype.applyEdit = function(oldName, obj) {

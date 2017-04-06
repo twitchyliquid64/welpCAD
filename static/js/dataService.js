@@ -25,6 +25,29 @@
         self.saveTarget = 'browser';
       };
 
+      self.saveAssembly = function(assembly){
+        if (!self.projectName)
+          return 'Cannot save assembly - project not setup';
+        if (!assembly.getName())
+          return 'Cannot save unnamed assembly';
+
+        var index = self._getAssemblyIndex(assembly.getName());
+        if (index == -1) { //No assembly by that name exists
+          self.assemblies.push(assembly);
+        } else {
+          self.assemblies[index] = assembly;
+        }
+        self._storageModelChanged();
+        return false;
+      };
+
+      self._getAssemblyIndex = function(name){
+        for(var i = 0; i < self.assemblies.length; i++)
+          if (self.assemblies[i].getName() == name)
+            return i;
+        return -1;
+      };
+
       // Called from designer by event to commit an updated version of the design with that name.
       // Creates if it does not exist.
       self.saveDesign = function(design){
@@ -71,6 +94,10 @@
           output.designs.push(self.designs[i].getSerializable());
         }
 
+        for(var i = 0; i < self.assemblies.length; i++) {
+          output.assemblies.push(self.assemblies[i].getSerializable());
+        }
+
         return output;
       };
 
@@ -85,7 +112,10 @@
         self.designs = [];
         for (var i = 0; i < obj.designs.length; i++) {
           self.designs.push(loadDocumentFromObj(obj.designs[i]));
-        };
+        }
+        for (var i = 0; i < obj.assemblies.length; i++) {
+          self.assemblies.push(loadAssemblyFromObj(obj.assemblies[i]));
+        }
       };
 
       // Load in the project with the given name from history (normally localStorage)
@@ -96,19 +126,33 @@
 
       // Called from UI to switch the designer to a specific design.
       self.loadDesign = function(designName) {
-        for(var i = 0; i < self.designs.length; i++) {
-          if (self.designs[i].name == designName) {
-            $rootScope.$broadcast('set-designer-design', {
-              design: self.designs[i],
-            });
-            return true;
-          }
+        var index = self._getDesignIndex(designName);
+        if (index != -1){
+          $rootScope.$broadcast('set-designer-design', {
+            design: self.designs[index],
+          });
+          return true;
+        }
+        return false;
+      };
+
+      // Called from UI to switch the assembler to a specific assembly.
+      self.loadAssembly = function(assemblyName) {
+        var index = self._getAssemblyIndex(assemblyName);
+        if (index != -1){
+          $rootScope.$broadcast('set-assembler-assembly', {
+            assembly: self.assemblies[index],
+          });
+          return true;
         }
         return false;
       };
 
       $rootScope.$on('design-save', function(event, args){
         self.saveDesign(args.design);
+      });
+      $rootScope.$on('assembly-save', function(event, args){
+        self.saveAssembly(args.assembly);
       });
 
       //$interval(self.fetchAndApplyDiff, 2000);

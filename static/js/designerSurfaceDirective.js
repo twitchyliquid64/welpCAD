@@ -164,6 +164,21 @@
 
             if (!$scope.selectedName)return;
             switch (event.key){
+              case 'delete':
+                var s = $scope.selectedName;
+                $rootScope.$broadcast('check-confirmation', {
+                  title: 'Confirm Deletion',
+                  content: 'Are you sure you want to delete ' + s + '?',
+                  actions: [
+                    {text: 'No'},
+                    {text: 'Yes', onAction: function(){
+                      $rootScope.$broadcast('designer-delete-component', {name: s});
+                    }},
+                  ]
+                });
+                $rootScope.$digest();
+                setSelected('');
+                return;
               case 'escape': //escape - deselect current element
                 setSelected('');
                 return;

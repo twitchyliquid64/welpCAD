@@ -1,6 +1,7 @@
-function Assembly (name, components) {
+function Assembly (name, components, nameRegister) {
     this.name = name || null;
     this.components = components || [];
+    this.nameRegister = nameRegister || {};
 }
 
 // Sets its name - takes a string
@@ -10,7 +11,21 @@ Assembly.prototype.setName = function(name) {
 Assembly.prototype.getName = function() {
   return this.name;
 }
+// Gets a name which has not be taken yet.
+Assembly.prototype.suggestName = function(componentType) {
+  if (!(componentType in this.nameRegister)){
+    this.nameRegister[componentType] = 0;
+  }
+  return componentType + '-' + (this.nameRegister[componentType]+1);
+}
 
+Assembly.prototype.getRenderables = function(dataProvider, opts){
+  var output = [];
+  for(var i = 0;i < this.components.length; i++){
+    output.push(this.components[i].getRenderable(dataProvider, opts));
+  }
+  return output;
+}
 
 Assembly.prototype.getSerializable = function(){
   var c = [];
@@ -21,7 +36,21 @@ Assembly.prototype.getSerializable = function(){
   return {
     name: this.name,
     components: c,
+    nameRegister: this.nameRegister,
   };
+}
+
+
+Assembly.prototype.add = function(component){
+  this.components.push(component);
+}
+
+
+function buildAssemblyComponentFromSpec(spec) {
+  switch (spec.cType){
+    case 'documentReference':
+      return new DocumentReference(...spec.parameters);
+  }
 }
 
 function loadAssemblyFromObj(d){
@@ -29,7 +58,7 @@ function loadAssemblyFromObj(d){
   for (var i = 0; i < d.components.length; i++){
     components[components.length] = buildAssemblyComponentFromSpec(d.components[i]);
   }
-  return new Assembly(d.name, components);
+  return new Assembly(d.name, components, d.nameRegister);
 }
 
 function loadAssemblyFromJsonData(jsonData) {

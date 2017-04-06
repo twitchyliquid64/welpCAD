@@ -32,6 +32,8 @@
     <script type="text/javascript" src="js/obj/rect.js"></script>
     <script type="text/javascript" src="js/obj/circle.js"></script>
     <script type="text/javascript" src="js/obj/document.js"></script>
+    <script type="text/javascript" src="js/obj/documentReference.js"></script>
+    <script type="text/javascript" src="js/obj/assembly.js"></script>
 
     <!-- application initialization -->
     <script type="text/javascript" src="js/app.js"></script>
@@ -191,7 +193,7 @@
             <assembly-renderer-directive></assembly-renderer-directive>
           </div>
           <div class="col s4 section">
-            <h5>{{getSidebarTitle()}}</h5>
+            <h5>{{getSidebarTitle()}} <span ng-if="dirty">*</span></h5>
 
             <ul class="collection" ng-if="!isPreviewMode && assembly">
             </ul>
@@ -201,6 +203,14 @@
 
             <a class="waves-effect waves-light btn teal" ng-click="fixSizePressed()"><i class="material-icons left">system_update_alt</i> Resize</a>
             <a class="waves-effect waves-light btn teal" ng-if="isPreviewMode" ng-click="resetPreview()"><i class="material-icons left">check</i> Done</a>
+          </div>
+          <div class="fixed-action-btn">
+            <a href="#" class="btn-floating btn-large red tooltipped" ng-click="newPressed()" data-position="left" data-delay="50" data-tooltip="Add Design to Assembly">
+              <i class="large material-icons">add</i>
+            </a>
+            <ul>
+              <li><a class="btn-floating yellow darken-1 tooltipped" ng-click="savePressed()" data-position="left" data-delay="50" data-tooltip="Save Assembly"><i class="material-icons">save</i></a></li>
+            </ul>
           </div>
         </div>
       </div>
