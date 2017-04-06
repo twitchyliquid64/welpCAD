@@ -41,6 +41,18 @@ Assembly.prototype.getSerializable = function(){
 }
 
 
+Assembly.prototype.getObjs = function(){
+  return this.components;
+}
+
+Assembly.prototype.getByName = function(name){
+  for(var i = 0;i < this.components.length; i++){
+    if (this.components[i].name == name) {
+      return this.components[i];
+    }
+  }
+}
+
 Assembly.prototype.add = function(component){
   this.components.push(component);
 }
@@ -64,4 +76,15 @@ function loadAssemblyFromObj(d){
 function loadAssemblyFromJsonData(jsonData) {
   var d = JSON.parse(jsonData);
   return loadAssemblyFromObj(d);
+}
+
+function meshFromPath(path, color, thickness){
+  var shapes = path.toShapes(true);
+  var localMaterial = new THREE.MeshStandardMaterial({
+    color: color,
+    metalness: 0,
+    roughness: 0,
+  });
+  var solid = new THREE.ExtrudeGeometry(shapes, { amount: thickness, bevelEnabled: false });
+  return new THREE.SceneUtils.createMultiMaterialObject(solid, [localMaterial]);
 }

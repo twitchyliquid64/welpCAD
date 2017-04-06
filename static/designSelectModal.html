@@ -1,0 +1,17 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='designSelectModal' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="designSelectModal" class="modal" style="max-height: 85%;">
+  <div class="modal-content">
+    <h4>Select Design</h4>
+
+    <div class="collection">
+      <a href="#!" class="collection-item" ng-click="select(option.name)"
+         ng-repeat="option in options">{{option.name}}</a>
+      <p ng-if="!options.length" class="collection-item">There are no designs in this project.</p>
+    </div>
+
+  <div class="modal-footer">
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCancel()"><i class="material-icons left">cancel</i>Cancel</a>
+  </div>
+</div>

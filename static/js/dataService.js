@@ -148,6 +148,17 @@
         return false;
       };
 
+      // Called from assembler to get the design with a particular name.
+      self.getDesign = function(designName) {
+        var index = self._getDesignIndex(designName);
+        if (index == -1)return undefined;
+        return self.designs[index];
+      }
+
+      self.getDesigns = function(){
+        return self.designs;
+      }
+
       $rootScope.$on('design-save', function(event, args){
         self.saveDesign(args.design);
       });

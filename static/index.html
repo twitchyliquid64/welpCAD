@@ -44,10 +44,12 @@
     <script type="text/javascript" src="js/assemblyController.js"></script>
     <script type="text/javascript" src="js/componentDetailDirective.js"></script>
     <script type="text/javascript" src="js/designerSurfaceDirective.js"></script>
+    <script type="text/javascript" src="js/assemblerEditControls.js"></script>
     <script type="text/javascript" src="js/assemblyRendererDirective.js"></script>
     <script type="text/javascript" src="js/confirmationDialogModal.js"></script>
     <script type="text/javascript" src="js/fileSelectModal.js"></script>
     <script type="text/javascript" src="js/editDesignModal.js"></script>
+    <script type="text/javascript" src="js/designSelectModal.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController" ng-cloak>
@@ -74,7 +76,7 @@
         <div class="section container" ng-controller="homeController">
 
           <div class="row"  ng-if="!dataService.projectOpen()">
-            <div class="col s6 offset-s3 section">
+            <div class="col s8 offset-s2 section">
               <h4>Set up a project</h4>
               <p>Welcome to welpCAD! To get started, create or open a project.</p>
               <div class="section" ng-if="projectsInHistory()">
@@ -195,14 +197,19 @@
           <div class="col s4 section">
             <h5>{{getSidebarTitle()}} <span ng-if="dirty">*</span></h5>
 
-            <ul class="collection" ng-if="!isPreviewMode && assembly">
+            <ul class="collection" ng-if="!isPreviewMode && assembly" style="height: 400px; overflow-y:auto;">
+              <a class="collection-item avatar" style="min-height: 70px; color: #000000;" ng-repeat="obj in assembly.getObjs()" ng-class="{active: selected==obj.name}" href="#" ng-click="select(obj.name)">
+                <i class="material-icons circle blue">view_agenda</i>
+                <span class="title">{{obj.name}}</span>
+                <p ng-if="obj.componentType=='documentReference'">Design <i>({{obj.documentName}})</i></p>
+              </a>
             </ul>
-            <p ng-if="isPreviewMode">Currently previewing an object from the designer. Press the 'Done' button below to return to your previous assembly, if any.</p>
+            <p ng-if="isPreviewMode">Currently previewing an object from the designer. Press the 'Done' button below to return to the designer.</p>
             <p ng-if="!isPreviewMode && !assembly">Please open an assembly from the project view.</p>
 
+            <a class="waves-effect waves-light btn teal right" ng-if="isPreviewMode" ng-click="resetPreview()"><i class="material-icons left">check</i> Done</a>
 
-            <a class="waves-effect waves-light btn teal" ng-click="fixSizePressed()"><i class="material-icons left">system_update_alt</i> Resize</a>
-            <a class="waves-effect waves-light btn teal" ng-if="isPreviewMode" ng-click="resetPreview()"><i class="material-icons left">check</i> Done</a>
+            <assembler-edit-controls ng-if="!isPreviewMode && assembly"></assembler-edit-controls>
           </div>
           <div class="fixed-action-btn">
             <a href="#" class="btn-floating btn-large red tooltipped" ng-click="newPressed()" data-position="left" data-delay="50" data-tooltip="Add Design to Assembly">
@@ -210,6 +217,7 @@
             </a>
             <ul>
               <li><a class="btn-floating yellow darken-1 tooltipped" ng-click="savePressed()" data-position="left" data-delay="50" data-tooltip="Save Assembly"><i class="material-icons">save</i></a></li>
+              <li><a class="btn-floating green darken-3 tooltipped" ng-click="paint()" data-position="left" data-delay="50" data-tooltip="Resize and Paint"><i class="material-icons">photo_size_select_large</i></a></li>
             </ul>
           </div>
         </div>
@@ -217,6 +225,7 @@
 
       <confirmation-dialog-modal></confirmation-dialog-modal>
       <file-select-modal></file-select-modal>
+      <design-select-modal></design-select-modal>
     </div>
 
 

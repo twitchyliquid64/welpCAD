@@ -1,0 +1,40 @@
+<div ng-show="componentSelected()">
+  <p><b>{{selection}}</b> ({{obj.componentType}})</p>
+
+  <div class="row valign-wrapper">
+    <div class="col s3 valign">
+      <b>X: </b>{{obj.x}} ({{conv(obj.orientationx)}})
+    </div>
+    <div class="col s9">
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseX(5)"><i class="material-icons left">arrow_upward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseX(-5)"><i class="material-icons left">arrow_downward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateX(90)"><i class="material-icons left">rotate_right</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateX(-90)"><i class="material-icons left">rotate_left</i></a>
+    </div>
+  </div>
+
+  <div class="row valign-wrapper">
+    <div class="col s3 valign">
+      <b>Y: </b>{{obj.y}} ({{conv(obj.orientationy)}})
+    </div>
+    <div class="col s9">
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseY(5)"><i class="material-icons left">arrow_upward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseY(-5)"><i class="material-icons left">arrow_downward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateY(90)"><i class="material-icons left">rotate_right</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateY(-90)"><i class="material-icons left">rotate_left</i></a>
+    </div>
+  </div>
+
+  <div class="row valign-wrapper">
+    <div class="col s3 valign">
+      <b>Z: </b>{{obj.z}} ({{conv(obj.orientationz)}})
+    </div>
+    <div class="col s9">
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseZ(5)"><i class="material-icons left">arrow_upward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseZ(-5)"><i class="material-icons left">arrow_downward</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateZ(90)"><i class="material-icons left">rotate_right</i></a>
+      <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateZ(-90)"><i class="material-icons left">rotate_left</i></a>
+    </div>
+  </div>
+
+</div>

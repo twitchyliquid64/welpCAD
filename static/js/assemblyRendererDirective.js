@@ -56,6 +56,7 @@
 
             $scope.camera.position.z = 550;
             $scope.mainMeshes = new THREE.Group();
+						$scope.meshesByName = {};
             $scope.scene.add( $scope.mainMeshes );
           }
 
@@ -88,9 +89,13 @@
             for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
                 $scope.mainMeshes.remove($scope.mainMeshes.children[i]);
             }
+						$scope.meshesByName = {};
 						// Add new objects to the scene group
-            for (var i = 0; i < meshes.length; i++)
+            for (var i = 0; i < meshes.length; i++) {
               $scope.mainMeshes.add(meshes[i]);
+							if (meshes[i].name)
+								$scope.meshesByName[meshes[i].name] = meshes[i];
+						}
           };
 
 
@@ -98,26 +103,19 @@
 						for (var i = $scope.mainMeshes.children.length - 1; i >= 0; i--) {
                 $scope.mainMeshes.remove($scope.mainMeshes.children[i]);
             }
+						$scope.meshesByName = {};
 						$scope.camera.position.z = 550;
 						$scope.camera.position.x = 0;
 						$scope.camera.position.y = 0;
+						$scope.camera.rotation.x = 0;
+						$scope.camera.rotation.y = 0;
+						$scope.camera.rotation.z = 0;
 
 						var tx = new THREE.TextGeometry('welpCAD', {font: $scope.fontRes});
 						THREE.GeometryUtils.center( tx );
 						$scope.startingGraphic = new THREE.Mesh( tx, material );
 						$scope.scene.add( $scope.startingGraphic );
           });
-
-					function meshFromPath(path, color, thickness){
-						var shapes = path.toShapes(true);
-						var localMaterial = new THREE.MeshStandardMaterial({
-							color: color,
-							metalness: 0,
-							roughness: 0,
-						});
-						var solid = new THREE.ExtrudeGeometry(shapes, { amount: thickness, bevelEnabled: false });
-						return new THREE.SceneUtils.createMultiMaterialObject(solid, [localMaterial]);
-					}
 
           $scope.$on('resize-assembler-renderer', function(event, args) {
             var container = document.getElementById('assemblerRenderContainer');
@@ -130,6 +128,22 @@
             $scope.assembly = args.assembly;
 						$scope.applyRender($scope.assembly.getRenderables($dataService, {}));
           });
+					$rootScope.$on('assembly-translate-object', function(event, args){
+						if (args.x)
+							$scope.meshesByName[args.name].translateX(args.x);
+						if (args.y)
+							$scope.meshesByName[args.name].translateY(args.y);
+						if (args.z)
+							$scope.meshesByName[args.name].translateZ(args.z);
+					})
+					$rootScope.$on('assembly-rotate-object', function(event, args){
+						if (args.x)
+							$scope.meshesByName[args.name].rotateX(args.x);
+						if (args.y)
+							$scope.meshesByName[args.name].rotateY(args.y);
+						if (args.z)
+							$scope.meshesByName[args.name].rotateZ(args.z);
+					})
 
 
 
