@@ -88,7 +88,7 @@
                 </div>
               </div>
               <a class="waves-effect waves-light btn-large" href="#!" ng-click="newProject()"><i class="material-icons left">add</i>New Project</a>
-              <a class="waves-effect waves-light btn-large right" href="#!" ng-click="importPressed()"><i class="material-icons left">folder_open</i>Open Project</a>
+              <a class="waves-effect waves-light btn-large right" href="#!" ng-click="importPressed()"><i class="material-icons left">folder_open</i>Import Project</a>
             </div>
           </div>
 
@@ -99,7 +99,7 @@
               </div>
 
               <!-- Dropdown Trigger -->
-              <a class='dropdown-button btn' href='#' data-activates='deleteDropdown'><i class="material-icons left">delete</i> Delete</a>
+              <a class='dropdown-button btn' href='#' data-activates='deleteDropdown'><i class="material-icons left">delete</i> Delete Component</a>
 
               <!-- Dropdown Structure -->
               <ul id='deleteDropdown' class='dropdown-content'>
@@ -108,8 +108,11 @@
                 <li><a href="#!" ng-click="deleteObject()">Object</a></li>
                 <li class="divider"></li>
                 <li><a href="#!" ng-click="deleteProject()"><i class="material-icons left">warning</i> Project</a></li>
-
               </ul>
+
+              <a class="waves-effect waves-light btn" href="#" ng-click="dataService.save()"><i class="material-icons left">save</i> Save Project</a>
+              <a class="waves-effect waves-light btn" href="#" ng-click="dataService.init()"><i class="material-icons left">close</i> Close Project</a>
+
 
             </div>
             <div class="row">
@@ -145,9 +148,7 @@
               <i class="large material-icons">add</i>
             </a>
             <ul>
-              <li><a class="btn-floating blue tooltipped" ng-click="importPressed()" data-position="left" data-delay="50" data-tooltip="Import Project"><i class="material-icons">attach_file</i></a></li>
               <li><a class="btn-floating red tooltipped" ng-click="exportPressed()" data-position="left" data-delay="50" data-tooltip="Export Project"><i class="material-icons">file_download</i></a></li>
-              <li><a class="btn-floating yellow darken-1 tooltipped" ng-click="dataService.save()" data-position="left" data-delay="50" data-tooltip="Save Project"><i class="material-icons">save</i></a></li>
 
               <li><a class="btn-floating orange tooltipped" data-position="left" data-delay="50" data-tooltip="New Assembly" ng-click="newAssembly()"><i class="material-icons">library_add</i></a></li>
               <li><a class="btn-floating teal tooltipped" data-position="left" data-delay="50" data-tooltip="New Design" ng-click="newDesign()"><i class="material-icons">control_point_duplicate</i></a></li>
