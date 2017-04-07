@@ -38,6 +38,13 @@
             $scope.open = true;
           });
 
+          $rootScope.$on('select-object-modal-open', function(event, args) {
+            if (args.title)$scope.title = args.title;
+            if (args.onSelect)$scope.onSelect = args.onSelect;
+            $scope.options = dataService.getObjects();
+            $scope.open = true;
+          });
+
           $scope.select = function(name){
             if ($scope.onSelect)$scope.onSelect(name);
             $scope.onCancel();

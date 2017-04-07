@@ -36,6 +36,12 @@
         }});
       };
 
+      $scope.deleteObject = function(){
+        $rootScope.$broadcast('select-object-modal-open', {title: 'Delete Object', onSelect: function(name){
+          $scope.dataService.deleteObject(name);
+        }});
+      };
+
       $scope.deleteProject = function(){
         $rootScope.$broadcast('check-confirmation', {
           title: 'Really delete the current project?',
@@ -75,6 +81,16 @@
         if (!name)return;
         $scope.dataService.saveAssembly(new Assembly(name));
       };
+
+      $scope.newFastenerObject = function() {
+        $rootScope.$broadcast('new-fastener-modal-open', {
+          cb: function(typeSelected, name, geometry){
+            console.log(typeSelected, name, geometry);
+            var newObj = new ProjectObject(name, geometry.toJSON())
+            $scope.dataService.saveObject(newObj);
+          }
+        });
+      }
 
       $scope.titleClick = function(){
         if ($scope.dataService.projectOpen()) {

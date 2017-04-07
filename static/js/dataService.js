@@ -73,6 +73,29 @@
         return -1;
       };
 
+      self.saveObject = function(object){
+        if (!self.projectName)
+          return 'Cannot save object - project not setup';
+        if (!object.getName())
+          return 'Cannot save unnamed object';
+
+        var index = self._getObjectIndex(object.getName());
+        if (index == -1) { //No design by that name exists
+          self.objects.push(object);
+        } else {
+          self.objects[index] = object;
+        }
+        self._storageModelChanged();
+        return false;
+      };
+
+      self._getObjectIndex = function(name){
+        for(var i = 0; i < self.objects.length; i++)
+          if (self.objects[i].getName() == name)
+            return i;
+        return -1;
+      };
+
       self._storageModelChanged = function(){
         if (self.saveTarget == 'browser' && self.projectName) {
           var ls = self.projectsInHistory || {};
@@ -106,6 +129,10 @@
           output.assemblies.push(self.assemblies[i].getSerializable());
         }
 
+        for(var i = 0; i < self.objects.length; i++) {
+          output.objects.push(self.objects[i].getSerializable());
+        }
+
         return output;
       };
 
@@ -123,6 +150,9 @@
         }
         for (var i = 0; i < obj.assemblies.length; i++) {
           self.assemblies.push(loadAssemblyFromObj(obj.assemblies[i]));
+        }
+        for (var i = 0; i < obj.objects.length; i++) {
+          self.objects.push(loadProjectObjectFromObj(obj.objects[i]));
         }
       };
 
@@ -181,12 +211,24 @@
         }
       }
 
+      self.deleteObject = function(name) {
+        for (var i = 0; i < this.objects.length; i++) {
+          if (this.objects[i].name == name){
+            this.objects.splice(i, 1);
+            return;
+          }
+        }
+      }
+
 
       self.getDesigns = function(){
         return self.designs;
       }
       self.getAssemblies = function(){
         return self.assemblies;
+      }
+      self.getObjects = function(){
+        return self.objects;
       }
 
       $rootScope.$on('design-save', function(event, args){

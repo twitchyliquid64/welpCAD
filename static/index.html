@@ -34,6 +34,7 @@
     <script type="text/javascript" src="js/obj/document.js"></script>
     <script type="text/javascript" src="js/obj/documentReference.js"></script>
     <script type="text/javascript" src="js/obj/assembly.js"></script>
+    <script type="text/javascript" src="js/obj/object.js"></script>
 
     <!-- application initialization -->
     <script type="text/javascript" src="js/app.js"></script>
@@ -51,6 +52,7 @@
     <script type="text/javascript" src="js/editDesignModal.js"></script>
     <script type="text/javascript" src="js/selectModal.js"></script>
     <script type="text/javascript" src="js/editAssemblerCoordinateModal.js"></script>
+    <script type="text/javascript" src="js/newFastenerModal.js"></script>
 
 </head>
 <body ng-app="welpCAD" ng-controller="BodyController" ng-cloak>
@@ -110,8 +112,8 @@
                 <li><a href="#!" ng-click="deleteProject()"><i class="material-icons left">warning</i> Project</a></li>
               </ul>
 
-              <a class="waves-effect waves-light btn" href="#" ng-click="dataService.save()"><i class="material-icons left">save</i> Save Project</a>
-              <a class="waves-effect waves-light btn" href="#" ng-click="dataService.init()"><i class="material-icons left">close</i> Close Project</a>
+              <a class="waves-effect waves-light btn-floating right" href="#" ng-click="dataService.save()"><i class="material-icons left">save</i></a>
+              <a class="waves-effect waves-light btn-floating right" href="#" ng-click="dataService.init()"><i class="material-icons left">close</i></a>
 
 
             </div>
@@ -136,11 +138,13 @@
                 <div class="collection with-header">
                   <h5 class="collection-header">Objects</h5>
                   <a href="#!" class="collection-item"
-                     ng-repeat="assembly in dataService.objects">{{assembly.name}}</a>
+                     ng-repeat="object in dataService.objects">{{object.name}}</a>
                   <p ng-if="!dataService.objects.length" class="collection-item">There are no objects in this project.</p>
                 </div>
               </div>
             </div>
+
+            <new-fastener-modal></new-fastener-modal>
           </div>
 
           <div class="fixed-action-btn" ng-show="dataService.projectOpen()">
@@ -150,6 +154,7 @@
             <ul>
               <li><a class="btn-floating red tooltipped" ng-click="exportPressed()" data-position="left" data-delay="50" data-tooltip="Export Project"><i class="material-icons">file_download</i></a></li>
 
+              <li><a class="btn-floating blue tooltipped" data-position="left" data-delay="50" data-tooltip="New Fastener" ng-click="newFastenerObject()"><i class="material-icons">add_circle_outline</i></a></li>
               <li><a class="btn-floating orange tooltipped" data-position="left" data-delay="50" data-tooltip="New Assembly" ng-click="newAssembly()"><i class="material-icons">library_add</i></a></li>
               <li><a class="btn-floating teal tooltipped" data-position="left" data-delay="50" data-tooltip="New Design" ng-click="newDesign()"><i class="material-icons">control_point_duplicate</i></a></li>
             </ul>

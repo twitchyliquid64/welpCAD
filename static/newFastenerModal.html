@@ -1,0 +1,50 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='newFastenerModal' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="newFastenerModal" class="modal" style="max-height: 85%;">
+  <div class="modal-content">
+    <h4>Create Fastener Object</h4>
+
+    <div class="fields-container">
+      <div class="row" style="margin-bottom: 2px;"><!-- Type selector -->
+        <div class="col s12">
+          <span style="margin-right: 25px;">
+            <input class="with-gap" name="fastener_typeSelector" type="radio" id="washerSelector" ng-click="setType('washer')" ng-checked="typeSelected=='washer'" />
+            <label for="washerSelector">Washer</label>
+          </span>
+
+          <span>
+            <input class="with-gap" name="fastener_typeSelector" type="radio" id="hexSelector" ng-click="setType('hex_bolt')" ng-checked="typeSelected=='hex_bolt'" />
+            <label for="hexSelector">Hex Bolt</label>
+          </span>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-bottom: 2px;"> <!-- Name -->
+        <div class="input-field col s12">
+          <input id="name_fastenerNew" type="text" ng-model="name" ng-class="nameVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="name_fastenerNew">Object Name</label>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom: 2px;"> <!-- Type-specific elements -->
+        <div class="input-field col s3" ng-show="typeSelected=='washer'">
+          <input id="innerRadius_fastenerNew" type="text" ng-model="innerRadius" ng-class="irVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="innerRadius_fastenerNew">Inner Radius</label>
+        </div>
+        <div class="input-field col s3" ng-show="typeSelected=='washer'">
+          <input id="outerRadius_fastenerNew" type="text" ng-model="outerRadius" ng-class="orVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="outerRadius_fastenerNew">Outer Radius</label>
+        </div>
+        <div class="input-field col s6" ng-show="typeSelected=='washer'">
+          <input id="thickness_fastenerNew" type="text" ng-model="thickness" ng-class="thkVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="thickness_fastenerNew">Thickness</label>
+        </div>
+      </div>
+    </div>
+
+  <div class="modal-footer">
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCreate()"><span>Create</span></a>
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCancel()"><span>Cancel</span></a>
+  </div>
+</div>
