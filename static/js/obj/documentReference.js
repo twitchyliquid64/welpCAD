@@ -21,9 +21,7 @@ DocumentReference.prototype.getName = function() {
 };
 
 DocumentReference.prototype.getRenderable = function(dataProvider, opts){
-  console.log('getRenderable()', this.documentName);
   var doc = dataProvider.getDesign(this.documentName);
-  console.log('doc:', doc);
   var p = meshFromPath(doc.getRenderable({fill: '#ffe0b2'}, {fill: '#ffe0b2'}), doc.renderColor || '#ff0000', doc.thickness || 3);
   p.name = this.name;
   p.rotateX(this.orientationx);

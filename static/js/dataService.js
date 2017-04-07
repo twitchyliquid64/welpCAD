@@ -81,6 +81,14 @@
         }
       };
 
+      self.deleteCurrent = function(){
+        var ls = self.projectsInHistory || {};
+        ls[self.projectName] = undefined;
+        localStorage.projects = JSON.stringify(ls);
+        self.init(null);
+        self.projectsInHistory = localStorage.projects ? JSON.parse(localStorage.projects) : undefined;
+      }
+
       self._getProjectSerialized = function(){
         var output = {
           projectName: self.projectName,
@@ -155,8 +163,30 @@
         return self.designs[index];
       }
 
+      self.deleteDesign = function(name) {
+        for (var i = 0; i < this.designs.length; i++) {
+          if (this.designs[i].name == name){
+            this.designs.splice(i, 1);
+            return;
+          }
+        }
+      }
+
+      self.deleteAssembly = function(name) {
+        for (var i = 0; i < this.assemblies.length; i++) {
+          if (this.assemblies[i].name == name){
+            this.assemblies.splice(i, 1);
+            return;
+          }
+        }
+      }
+
+
       self.getDesigns = function(){
         return self.designs;
+      }
+      self.getAssemblies = function(){
+        return self.assemblies;
       }
 
       $rootScope.$on('design-save', function(event, args){

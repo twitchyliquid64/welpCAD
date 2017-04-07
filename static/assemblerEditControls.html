@@ -10,6 +10,8 @@
       <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseX(-5)"><i class="material-icons left">arrow_downward</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateX(90)"><i class="material-icons left">rotate_right</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateX(-90)"><i class="material-icons left">rotate_left</i></a>
+
+      <a class="waves-effect waves-light btn-floating right blue" ng-click="editX()" style="margin-right: 10px;"><i class="material-icons left">edit</i></a>
     </div>
   </div>
 
@@ -22,6 +24,8 @@
       <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseY(-5)"><i class="material-icons left">arrow_downward</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateY(90)"><i class="material-icons left">rotate_right</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateY(-90)"><i class="material-icons left">rotate_left</i></a>
+
+      <a class="waves-effect waves-light btn-floating right blue" ng-click="editY()" style="margin-right: 10px;"><i class="material-icons left">edit</i></a>
     </div>
   </div>
 
@@ -34,7 +38,13 @@
       <a class="waves-effect waves-light btn-floating right blue lighten-3" ng-click="increaseZ(-5)"><i class="material-icons left">arrow_downward</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateZ(90)"><i class="material-icons left">rotate_right</i></a>
       <a class="waves-effect waves-light btn-floating right blue lighten-2" ng-click="rotateZ(-90)"><i class="material-icons left">rotate_left</i></a>
+
+      <a class="waves-effect waves-light btn-floating right blue" ng-click="editZ()" style="margin-right: 10px;"><i class="material-icons left">edit</i></a>
     </div>
   </div>
+
+  <a class="waves-effect waves-light btn" href="#" ng-click="delete()"><i class="material-icons left">delete</i> Delete</a>
+  <a class="waves-effect waves-light btn" href="#" ng-click="name()"><i class="material-icons left">edit</i> Change Name</a>
+
 
 </div>

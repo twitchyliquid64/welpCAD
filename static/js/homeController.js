@@ -24,6 +24,29 @@
           $scope.changePage('assembler');
       };
 
+      $scope.deleteDesign = function(){
+        $rootScope.$broadcast('select-design-modal-open', {title: 'Delete Design', onSelect: function(name){
+          $scope.dataService.deleteDesign(name);
+        }});
+      };
+
+      $scope.deleteAssembly = function(){
+        $rootScope.$broadcast('select-assembly-modal-open', {title: 'Delete Assembly', onSelect: function(name){
+          $scope.dataService.deleteAssembly(name);
+        }});
+      };
+
+      $scope.deleteProject = function(){
+        $rootScope.$broadcast('check-confirmation', {
+          title: 'Really delete the current project?',
+          content: 'You have requested to permanently delete the project ' + $scope.dataService.projectName + '. Are you fuckin sure?',
+          actions: [
+            {text: 'No'},
+            {text: 'Yes', onAction: function(){$scope.dataService.deleteCurrent();}},
+          ]
+        });
+      }
+
       $scope.importPressed = function(){
         $rootScope.$broadcast('file-open-request', {
           title: 'Open Project',
@@ -52,6 +75,15 @@
         if (!name)return;
         $scope.dataService.saveAssembly(new Assembly(name));
       };
+
+      $scope.titleClick = function(){
+        if ($scope.dataService.projectOpen()) {
+          var n = prompt("New name for project:");
+          if (n) {
+            $scope.dataService.projectName = n;
+          }
+        }
+      }
 
       $scope.newProject = function() {
         if ($scope.dataService.projectOpen()) {

@@ -37,6 +37,16 @@
         }
       }
 
+      $scope.titleClick = function(){
+        if ($scope.assembly && !$scope.isPreviewMode) {
+          var n = prompt("New name for assembly:");
+          if (n) {
+            $scope.assembly.setName(n);
+            $scope.dirty = true;
+          }
+        }
+      }
+
       $scope.getSidebarTitle = function(){
         return $scope.isPreviewMode ? 'Preview design' : ($scope.assembly ? $scope.assembly.getName() : 'No assembly');
       }
@@ -60,6 +70,23 @@
       })
       $rootScope.$on('assembly-rotate-object', function(event, args){
         $scope.dirty = true;
+      })
+
+      $rootScope.$on('assembly-delete-object', function(event, args){
+        $scope.assembly.deleteByName(args.name);
+        $scope.dirty = true;
+        $scope.$broadcast('render-assembly', {assembly: $scope.assembly});
+      })
+
+      $rootScope.$on('assembly-rename-object', function(event, args){
+        $scope.assembly.renameByName(args.name, args.newName);
+        $scope.dirty = true;
+        $scope.$broadcast('render-assembly', {assembly: $scope.assembly});
+      })
+
+      $rootScope.$on('assembly-coords-changed-object', function(event, args){
+        $scope.dirty = true;
+        $scope.$broadcast('render-assembly', {assembly: $scope.assembly});
       })
 
       $rootScope.$on('set-assembler-assembly', function(event, args) {

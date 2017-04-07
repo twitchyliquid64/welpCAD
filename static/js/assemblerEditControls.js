@@ -12,7 +12,7 @@
         //restrict E means its can only be used as an element.
         restrict: 'E',
         templateUrl: function(elem, attr){
-          return "/assemblerEditControls.html"
+          return "/assemblerEditControls.html?cache=1"
         },
         link: function($scope, elem, attrs) {
           // scope = either parent scope or its own child scope if scope set.
@@ -55,6 +55,57 @@
           }
           $scope.conv = function(c){
             return THREE.Math.radToDeg(c);
+          }
+
+          $scope.delete = function(){
+            $rootScope.$broadcast('assembly-delete-object', {name: $scope.selection});
+            $scope.obj = null;
+            $scope.selection = null;
+          }
+
+          $scope.name = function(){
+            var newName = prompt("Enter the new name for '" + $scope.obj.name + "'");
+            if (newName) {
+              $rootScope.$broadcast('assembly-rename-object', {newName: newName, name: $scope.selection});
+              $scope.obj = null;
+              $scope.selection = null;
+            }
+          }
+
+          $scope.editX = function(){
+            $rootScope.$broadcast('assembler-edit-coordinates', {title: 'Edit X Co-ordinates',
+            pos: $scope.obj.x,
+            rot: THREE.Math.radToDeg($scope.obj.orientationx),
+            coordName: "X",
+            onAction: function(pos, rot){
+              $scope.obj.x = pos;
+              $scope.obj.orientationx = THREE.Math.degToRad(rot);
+              $rootScope.$broadcast('assembly-coords-changed-object', {name: $scope.selection});
+            }});
+          }
+
+          $scope.editY = function(){
+            $rootScope.$broadcast('assembler-edit-coordinates', {title: 'Edit Y Co-ordinates',
+            pos: $scope.obj.y,
+            rot: THREE.Math.radToDeg($scope.obj.orientationy),
+            coordName: "Y",
+            onAction: function(pos, rot){
+              $scope.obj.y = pos;
+              $scope.obj.orientationy = THREE.Math.degToRad(rot);
+              $rootScope.$broadcast('assembly-coords-changed-object', {name: $scope.selection});
+            }});
+          }
+
+          $scope.editZ = function(){
+            $rootScope.$broadcast('assembler-edit-coordinates', {title: 'Edit Z Co-ordinates',
+            pos: $scope.obj.z,
+            rot: THREE.Math.radToDeg($scope.obj.orientationz),
+            coordName: "Z",
+            onAction: function(pos, rot){
+              $scope.obj.x = pos;
+              $scope.obj.orientationz = THREE.Math.degToRad(rot);
+              $rootScope.$broadcast('assembly-coords-changed-object', {name: $scope.selection});
+            }});
           }
 
           $scope.$on('assembly-selection-changed', function(event, args){

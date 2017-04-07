@@ -53,6 +53,24 @@ Assembly.prototype.getByName = function(name){
   }
 }
 
+Assembly.prototype.deleteByName = function(name){
+  for(var i = 0;i < this.components.length; i++){
+    if (this.components[i].name == name) {
+      this.components.splice(i, 1);
+      return;
+    }
+  }
+}
+
+Assembly.prototype.renameByName = function(name, newName){
+  for(var i = 0;i < this.components.length; i++){
+    if (this.components[i].name == name) {
+      this.components[i].setName(newName);
+      return;
+    }
+  }
+}
+
 Assembly.prototype.add = function(component){
   this.components.push(component);
 }

@@ -35,3 +35,7 @@
 .design-header > h5 {
   display: inline-block;
 }
+
+.pointerCursor {
+    cursor: pointer;
+}

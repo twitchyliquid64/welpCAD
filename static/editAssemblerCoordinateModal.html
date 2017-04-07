@@ -1,0 +1,26 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='editAssemblerCoordinateModal' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="editAssemblerCoordinateModal" class="modal" style="max-height: 85%;">
+  <div class="modal-content">
+    <h4>{{title}}</h4>
+    <p ng-if="content">{{content}}</p>
+
+    <div class="fields-container">
+      <div class="row" style="margin-bottom: 2px;"> <!-- Name -->
+        <div class="input-field col s6">
+          <input id="pos_assEdit" type="text" ng-model="pos" ng-keyup="$event.keyCode == 13 && onPress()">
+          <label for="pos_assEdit">{{coordName}} Position</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="rot_assEdit" type="text" ng-model="rot" ng-keyup="$event.keyCode == 13 && onPress()">
+          <label for="rot_assEdit">{{coordName}} Rotation</label>
+        </div>
+      </div>
+    </div>
+
+  <div class="modal-footer">
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onPress()"><span>Save</span></a>
+    <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCancel()"><span>Cancel</span></a>
+  </div>
+</div>
