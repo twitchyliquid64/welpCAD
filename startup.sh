@@ -1,5 +1,5 @@
 #!/bin/bash
-go run serv.go
+go run serv.go --addr :6521
 
 PID=$!
 wait $PID
