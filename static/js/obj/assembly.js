@@ -80,6 +80,8 @@ function buildAssemblyComponentFromSpec(spec) {
   switch (spec.cType){
     case 'documentReference':
       return new DocumentReference(...spec.parameters);
+    case 'objectReference':
+      return new ObjectReference(...spec.parameters);
   }
 }
 

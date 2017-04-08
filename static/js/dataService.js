@@ -73,6 +73,13 @@
         return -1;
       };
 
+      // Called from assembler to get the object with a particular name.
+      self.getObject = function(objectName) {
+        var index = self._getObjectIndex(objectName);
+        if (index == -1)return undefined;
+        return self.objects[index];
+      }
+
       self.saveObject = function(object){
         if (!self.projectName)
           return 'Cannot save object - project not setup';

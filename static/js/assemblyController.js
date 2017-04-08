@@ -20,6 +20,16 @@
         }
       }
 
+      $scope.newObjectPressed = function(){
+        if (!$scope.isPreviewMode && $scope.assembly) {
+          $rootScope.$broadcast('select-object-modal-open', {onSelect: function(name){
+            $scope.assembly.add(new ObjectReference(prompt("enter a name for this object"), name))
+            $scope.dirty = true;
+            $scope.$broadcast('render-assembly', {assembly: $scope.assembly});
+          }});
+        }
+      }
+
       $scope.paint = function(){
         $scope.$broadcast('resize-assembler-renderer');
         $scope.$broadcast('render-assembly', {assembly: $scope.assembly});

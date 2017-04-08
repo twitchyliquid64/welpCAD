@@ -102,7 +102,7 @@
             rot: THREE.Math.radToDeg($scope.obj.orientationz),
             coordName: "Z",
             onAction: function(pos, rot){
-              $scope.obj.x = pos;
+              $scope.obj.z = pos;
               $scope.obj.orientationz = THREE.Math.degToRad(rot);
               $rootScope.$broadcast('assembly-coords-changed-object', {name: $scope.selection});
             }});

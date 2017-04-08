@@ -53,7 +53,7 @@
               if ($scope.typeSelected == 'washer') {
                 var arcShape = new THREE.Shape();
         				arcShape.moveTo(Number($scope.outerRadius), 0 );
-        				arcShape.absarc( 0, 0, Number($scope.outerRadius)-Number($scope.innerRadius), 0, Math.PI*2, false );
+        				arcShape.absarc( 0, 0, Number($scope.outerRadius), 0, Math.PI*2, false );
         				var holePath = new THREE.Path();
         				holePath.moveTo( Number($scope.innerRadius), 0 );
         				holePath.absarc( 0, 0, Number($scope.innerRadius), 0, Math.PI*2, true );
