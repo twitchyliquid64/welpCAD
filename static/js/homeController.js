@@ -84,9 +84,9 @@
 
       $scope.newFastenerObject = function() {
         $rootScope.$broadcast('new-fastener-modal-open', {
-          cb: function(typeSelected, name, geometry){
+          cb: function(typeSelected, name, geometry, color){
             console.log(typeSelected, name, geometry);
-            var newObj = new ProjectObject(name, JSON.stringify(geometry.toJSON()))
+            var newObj = new ProjectObject(name, JSON.stringify(geometry.toJSON()), color);
             $scope.dataService.saveObject(newObj);
           }
         });

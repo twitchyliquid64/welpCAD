@@ -30,15 +30,40 @@
       <div class="row" style="margin-bottom: 2px;"> <!-- Type-specific elements -->
         <div class="input-field col s3" ng-show="typeSelected=='washer'">
           <input id="innerRadius_fastenerNew" type="text" ng-model="innerRadius" ng-class="irVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
-          <label for="innerRadius_fastenerNew">Inner Radius</label>
+          <label for="innerRadius_fastenerNew">Inner Radius (mm)</label>
         </div>
         <div class="input-field col s3" ng-show="typeSelected=='washer'">
           <input id="outerRadius_fastenerNew" type="text" ng-model="outerRadius" ng-class="orVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
-          <label for="outerRadius_fastenerNew">Outer Radius</label>
+          <label for="outerRadius_fastenerNew">Outer Radius (mm)</label>
         </div>
         <div class="input-field col s6" ng-show="typeSelected=='washer'">
           <input id="thickness_fastenerNew" type="text" ng-model="thickness" ng-class="thkVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
-          <label for="thickness_fastenerNew">Thickness</label>
+          <label for="thickness_fastenerNew">Thickness (mm)</label>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 2px;"><!-- Color selector -->
+        <div class="col s12">
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_redSelector" ng-click="setRenderColor('#f44336')" ng-checked="color=='#f44336'" />
+            <label for="fastener_redSelector" class="colorLabel">Red</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_purpleSelector" ng-click="setRenderColor('#8e24aa')" ng-checked="color=='#8e24aa'" />
+            <label for="fastener_purpleSelector" class="colorLabel">Purple</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_blueSelector" ng-click="setRenderColor('#2196f3')" ng-checked="color=='#2196f3'" />
+            <label for="fastener_blueSelector" class="colorLabel">Blue</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_greenSelector" ng-click="setRenderColor('#4caf50')" ng-checked="color=='#4caf50'" />
+            <label for="fastener_greenSelector" class="colorLabel">Green</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_yellowSelector" ng-click="setRenderColor('#ffeb3b')" ng-checked="color=='#ffeb3b'" />
+            <label for="fastener_yellowSelector" class="colorLabel">Yellow</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_orangeSelector" ng-click="setRenderColor('#ff9800')" ng-checked="color=='#ff9800'" />
+            <label for="fastener_orangeSelector" class="colorLabel">Orange</label>
+
+            <input class="with-gap" name="fastener_colorSelector" type="radio" id="fastener_greySelector" ng-click="setRenderColor('#607d8b')" ng-checked="color=='#607d8b'" />
+            <label for="fastener_greySelector" class="colorLabel">Grey</label>
         </div>
       </div>
     </div>

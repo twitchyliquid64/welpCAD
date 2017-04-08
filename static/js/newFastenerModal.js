@@ -29,6 +29,7 @@
           $scope.typeSelected = 'washer';
           $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = [];
           $scope.name = '';
+          $scope.color = '#f44336';
 
           $rootScope.$on('new-fastener-modal-open', function(event, args) {
             if (args.typeSelected)$scope.typeSelected = args.typeSelected;
@@ -45,6 +46,11 @@
             $scope.typeSelected = 'washer';
             $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = [];
             $scope.name = $scope.thickness = $scope.innerRadius = $scope.outerRadius = '';
+            $scope.color = '#f44336';
+          }
+
+          $scope.setRenderColor = function(c){
+            $scope.color = c;
           }
 
           $scope.onCreate = function(){
@@ -61,7 +67,7 @@
 
                 geometry = new THREE.ExtrudeGeometry(arcShape, { amount: Number($scope.thickness), bevelEnabled: false });
               }
-              $scope.cb($scope.typeSelected, $scope.name, geometry);
+              $scope.cb($scope.typeSelected, $scope.name, geometry, $scope.color);
               $scope.onCancel();
             }
           }
