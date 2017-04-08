@@ -25,8 +25,8 @@ ProjectObject.prototype.getName = function() {
 ProjectObject.prototype.getRenderable = function(opts){
   var localMaterial = new THREE.MeshStandardMaterial({
     color: this.color,
-    metalness: 0,
-    roughness: 0,
+    metalness: 0.13,
+    roughness: 0.37,
   });
 
   var p = THREE.SceneUtils.createMultiMaterialObject(this.cachedGeometry, [localMaterial]);
