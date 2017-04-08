@@ -27,7 +27,7 @@
         controller: function($scope) {
           $scope.open = false;
           $scope.typeSelected = 'washer';
-          $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = [];
+          $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = $scope.hrVldtn = $scope.hlVldtn = $scope.srVldtn = $scope.slVldtn = [];
           $scope.name = '';
           $scope.color = '#f44336';
 
@@ -44,8 +44,8 @@
           $scope.onCancel = function(){
             $scope.open = false;
             $scope.typeSelected = 'washer';
-            $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = [];
-            $scope.name = $scope.thickness = $scope.innerRadius = $scope.outerRadius = '';
+            $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = $scope.hrVldtn = $scope.hlVldtn = $scope.srVldtn = $scope.slVldtn = [];
+            $scope.name = $scope.thickness = $scope.innerRadius = $scope.outerRadius = $scope.headLength = $scope.headRadius = $scope.shaftLength = $scope.shaftRadius = '';
             $scope.color = '#f44336';
           }
 
@@ -67,6 +67,19 @@
 
                 geometry = new THREE.ExtrudeGeometry(arcShape, { amount: Number($scope.thickness), bevelEnabled: false });
               }
+              if ($scope.typeSelected == 'hex_bolt') {
+                console.log($scope.headRadius, $scope.headLength, $scope.boltRadius, $scope.shaftLength);
+                var boltGeometry = new THREE.Geometry();
+                // radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
+		            var head  = new THREE.CylinderGeometry( $scope.headRadius, $scope.headRadius, $scope.headLength, 6, 4);
+                // radiusAtTop, radiusAtBottom, height, segmentsAroundRadius, segmentsAlongHeight,
+		            var shaft = new THREE.CylinderGeometry( $scope.shaftRadius, $scope.shaftRadius, $scope.shaftLength, 22, 4);
+
+                boltGeometry.merge(head);
+                shaft.translate(0, ($scope.headLength/2 * -1) - ($scope.shaftLength/2), 0);
+                boltGeometry.merge(shaft);
+                geometry = boltGeometry;
+              }
               $scope.cb($scope.typeSelected, $scope.name, geometry, $scope.color);
               $scope.onCancel();
             }
@@ -74,14 +87,20 @@
 
           //Checks and applies validation classes. Returns true if fields are valid.
           function valid(){
-            $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = [];
+            $scope.irVldtn = $scope.orVldtn = $scope.thkVldtn = $scope.nameVldtn = $scope.hrVldtn = $scope.hlVldtn = $scope.srVldtn = $scope.slVldtn = [];
             $scope.nameVldtn = validationClass($scope.name, false);
             if ($scope.typeSelected == 'washer'){
               $scope.orVldtn = validationClass($scope.outerRadius, true);
               $scope.irVldtn = validationClass($scope.innerRadius, true);
               $scope.thkVldtn = validationClass($scope.thickness, true);
             }
-            var combined = $scope.irVldtn.concat($scope.orVldtn, $scope.thkVldtn, $scope.nameVldtn);
+            if ($scope.typeSelected == 'hex_bolt'){
+              $scope.srVldtn = validationClass($scope.shaftRadius, true);
+              $scope.slVldtn = validationClass($scope.shaftLength, true);
+              $scope.hlVldtn = validationClass($scope.headLength, true);
+              $scope.hrVldtn = validationClass($scope.headRadius, true);
+            }
+            var combined = $scope.irVldtn.concat($scope.orVldtn, $scope.irVldtn, $scope.thkVldtn, $scope.nameVldtn, $scope.srVldin, $scope.slVldin, $scope.hlVldin, $scope.hrVldtn);
             return !combined.includes('invalid');
           };
 

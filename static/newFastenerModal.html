@@ -40,6 +40,23 @@
           <input id="thickness_fastenerNew" type="text" ng-model="thickness" ng-class="thkVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
           <label for="thickness_fastenerNew">Thickness (mm)</label>
         </div>
+
+        <div class="input-field col s3" ng-show="typeSelected=='hex_bolt'">
+          <input id="headRadius_fastenerNew" type="text" ng-model="headRadius" ng-class="hrVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="headRadius_fastenerNew">Head Radius (mm)</label>
+        </div>
+        <div class="input-field col s3" ng-show="typeSelected=='hex_bolt'">
+          <input id="shaftRadius_fastenerNew" type="text" ng-model="shaftRadius" ng-class="srVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="shaftRadius_fastenerNew">Shaft Radius (mm)</label>
+        </div>
+        <div class="input-field col s3" ng-show="typeSelected=='hex_bolt'">
+          <input id="headLength_fastenerNew" type="text" ng-model="headLength" ng-class="hlVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="headLength_fastenerNew">Head Length (mm)</label>
+        </div>
+        <div class="input-field col s3" ng-show="typeSelected=='hex_bolt'">
+          <input id="shaftLength_fastenerNew" type="text" ng-model="shaftLength" ng-class="slVldtn" ng-keyup="$event.keyCode == 13 && onCreate()">
+          <label for="shaftLength_fastenerNew">Shaft Length (mm)</label>
+        </div>
       </div>
 
       <div class="row" style="margin-bottom: 2px;"><!-- Color selector -->

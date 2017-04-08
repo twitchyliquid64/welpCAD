@@ -23,7 +23,6 @@ ProjectObject.prototype.getName = function() {
 }
 
 ProjectObject.prototype.getRenderable = function(opts){
-  console.log(this.name, this.cachedGeometry)
   var localMaterial = new THREE.MeshStandardMaterial({
     color: this.color,
     metalness: 0,
