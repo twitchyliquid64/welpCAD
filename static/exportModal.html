@@ -1,0 +1,23 @@
+<!-- Modal Trigger -->
+<a class='btn' style="display: none;" data-target='exportDesignModal' open="open" modal>show Modal</a>
+<!-- Modal Structure -->
+<div id="exportDesignModal" class="modal" style="max-height: 85%;">
+  <div class="modal-content">
+      <h4>Export Design to DXF Format</h4>
+      <p>Press generate to save your design in a format which laser cutter software can read.</p>
+
+      <div class="fields-container">
+        <div class="row" style="margin-bottom: 2px;"> <!-- Name -->
+          <div class="input-field col s12">
+            <input id="tolerance_exportDesignModal" type="text" ng-model="tolerance" ng-keyup="$event.keyCode == 13 && Dodxf()">
+            <label for="tolerance_exportDesignModal">Tolerance (mm)</label>
+          </div>
+        </div>
+      </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="onCancel()"><i class="material-icons left">cancel</i>Cancel</a>
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="Dodxf()"><i class="material-icons left">settings</i>Generate</a>
+    </div>
+  </div>
+</div>

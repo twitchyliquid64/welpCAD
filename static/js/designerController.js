@@ -37,6 +37,10 @@
       $scope.newObjButtonPressed = function(){
         $rootScope.$broadcast('open-new-object-modal', {});
       }
+      // Invoked when the export DXF FAB is pressed.
+      $scope.exportDXFPressed = function(){
+        $rootScope.$broadcast('export-design-modal-open', {document: $scope.document});
+      }
       // Invoked when the preview button FAB is pressed.
       $scope.previewPressed = function(){
         $rootScope.$broadcast('assembler-preview-path', {

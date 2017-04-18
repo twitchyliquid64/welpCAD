@@ -143,6 +143,41 @@ Document.prototype.getRenderable = function(paperOptions, pathOptions){
 }
 
 
+function getSectionFromCurve(curve, lastPoint){
+  var points = curve.points;
+  var p1 = points[0];
+  var p2 = points[3];
+  if (curve.isStraight()){
+    return {'type': 'line', 'start': p1, 'end': p2};
+  } else {
+    return {'type': 'beizer', 'details': [points[1].x, points[1].y, points[2].x, points[2].y, points[3].x, points[3].y]};
+  }
+}
+
+Document.prototype.getPathDetails = function(paperOptions){
+  var drawable = this.getDrawable(paper, paperOptions).clone({insert: false});
+  drawable.flatten(paperOptions.flattenError || 0.11);
+  var paths = [];
+  if (drawable instanceof paper.CompoundPath) {
+    for(var i = 0; i < drawable.children.length; i++){
+      var p = drawable.children[i];
+      var lastPoint = undefined;
+      for(var o = 0; o < p.curves.length; o++){
+        lastPoint = p.curves[o].points[3];
+        paths[paths.length] = getSectionFromCurve(p.curves[o], lastPoint);
+      }
+    }
+  } else {
+    var lastPoint = undefined;
+    for(var o = 0; o < drawable.curves.length; o++){
+      lastPoint = drawable.curves[o].points[3];
+      paths[paths.length] = getSectionFromCurve(drawable.curves[o], lastPoint);
+    }
+  }
+
+  console.log(paths);
+  return paths;
+}
 
 
 Document.prototype.getSerializable = function(){
