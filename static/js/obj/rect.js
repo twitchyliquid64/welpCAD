@@ -1,7 +1,7 @@
 function Rect (name, pos, size, combinationOperation) {
     this.name = name;
     this.pos  = pos  || {x: 0, y: 0};
-    this.size = size || {width: 40, height: 40};
+    this.size = size || {width: 40, height: 40, radius: 0};
     this.combinationOperation = combinationOperation || 'add';
     this.icon = 'view_agenda';
     this.componentType = 'rect';
@@ -28,6 +28,12 @@ Rect.prototype.setSize = function(size) {
 Rect.prototype.getSize = function() {
   return jQuery.extend(true, {}, this.size);
 }
+Rect.prototype.setRadius = function(radius) {
+  this.size.radius = radius;
+}
+Rect.prototype.getRadius = function() {
+  return this.size.radius;
+}
 
 // Sets the combination operation.
 Rect.prototype.setCombinationOperation = function(op){
@@ -39,7 +45,7 @@ Rect.prototype.getCombinationOperation = function() {
 
 // Returns a paper item to draw with
 Rect.prototype.getDrawable = function(paperScope, options) {
-  var o = new paperScope.Path.Rectangle([this.pos.x, this.pos.y], [this.size.width, this.size.height]);
+  var o = new paperScope.Path.Rectangle([this.pos.x, this.pos.y], [this.size.width, this.size.height], this.size.radius || null);
   o.strokeColor = 'black';
   o.name = this.name;
   if (options.fill)

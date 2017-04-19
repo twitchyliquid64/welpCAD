@@ -41,15 +41,15 @@
           <input id="y_inpNewObj" type="text" ng-model="pos.y" ng-class="yValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="y_inpNewObj">Y position</label>
         </div>
-        <div class="input-field col s3" ng-if="typeSelected=='rect'">
+        <div class="input-field col s2" ng-if="typeSelected=='rect'">
           <input id="width_inpNewObj" type="text" ng-model="size.width" ng-class="widthValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="width_inpNewObj">Width</label>
         </div>
-        <div class="input-field col s3" ng-if="typeSelected=='rect'">
+        <div class="input-field col s2" ng-if="typeSelected=='rect'">
           <input id="height_inpNewObj" type="text" ng-model="size.height" ng-class="heightValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="height_inpNewObj">Height</label>
         </div>
-        <div class="input-field col s6" ng-if="typeSelected=='circle'">
+        <div class="input-field col s2">
           <input id="radius_inpNewObj" type="text" ng-model="size.radius" ng-class="radiusValidation" ng-keyup="$event.keyCode == 13 && done()">
           <label for="radius_inpNewObj">Radius</label>
         </div>

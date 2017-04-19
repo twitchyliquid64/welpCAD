@@ -78,11 +78,9 @@
               $scope.widthValidation = validationClass($scope.size.width, true);
               $scope.heightValidation = validationClass($scope.size.height, true);
             }
-            if ($scope.typeSelected == 'circle'){
-              $scope.radiusValidation = validationClass($scope.size.radius, true);
-            }
+            $scope.radiusValidation = validationClass($scope.size.radius, true);
             $scope.nameValidation = validationClass($scope.name, false);
-            var combined = $scope.xValidation.concat($scope.yValidation, $scope.widthValidation, $scope.heightValidation, $scope.nameValidation);
+            var combined = $scope.xValidation.concat($scope.yValidation, $scope.widthValidation, $scope.heightValidation, $scope.nameValidation, $scope.radiusValidation);
             return !combined.includes('invalid');
           };
 
@@ -91,7 +89,7 @@
           function reset(){
             $scope.xValidation = $scope.yValidation = $scope.widthValidation = $scope.heightValidation = $scope.nameValidation = $scope.radiusValidation = [];
             $scope.pos = {x: '', y: ''};
-            $scope.size = {width: '', height: ''};
+            $scope.size = {width: '', height: '', radius: ''};
             $scope.combinationOperation = 'add';
             $scope.isEditMode = false;
             $scope.name = '';
@@ -111,7 +109,6 @@
           $scope.done = function(){
             if (valid()){
               if ($scope.typeSelected == 'rect'){
-                $scope.size.radius = undefined;
                 saveObject(new Rect($scope.name, $scope.pos, $scope.size, $scope.combinationOperation));
               }
               if ($scope.typeSelected == 'circle'){
@@ -141,9 +138,7 @@
             if ($scope.typeSelected == 'rect'){
               $scope.size = args.obj.getSize();
             }
-            if ($scope.typeSelected == 'circle'){
-              $scope.size.radius = args.obj.getRadius();
-            }
+            $scope.size.radius = args.obj.getRadius();
             $scope.combinationOperation = args.obj.getCombinationOperation();
             $scope.isEditMode = true;
             $scope.open = true;
